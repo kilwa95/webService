@@ -1,0 +1,11 @@
+App\Entity\User:
+  collectionOperations:
+    get:
+    userConnected:
+      method: GET
+      path: /users/connected
+      controller: App\Controller\UserConnectedController
+      pagination_enabled: false
+
+     
+ 

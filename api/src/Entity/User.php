@@ -6,7 +6,8 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Annotation\ApiResource;
-
+use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
+  
 
 
 /**
@@ -14,7 +15,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * @ORM\Table(name="`user`")
  * @ApiResource()
  */
-class User implements UserInterface
+class User implements UserInterface,JWTUserInterface
 {
     /**
      * @ORM\Id
@@ -115,5 +116,13 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public static function createFromPayload($username, array $payload)
+    {
+        $user = new self();
+        $user->setUsername($username);
+        $user->setRoles($payload['roles']);
+        return $user;
     }
 }
