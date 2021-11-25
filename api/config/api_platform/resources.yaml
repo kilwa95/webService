@@ -1,6 +1,14 @@
 App\Entity\User:
   collectionOperations:
     get:
+    users:
+      path: /users
+      method: POST
+      controller: App\Controller\CustomerCreateController
+    admins:
+      path: /amdins
+      method: POST
+      controller: App\Controller\AdminCreateController
     userConnected:
       method: GET
       path: /users/connected
