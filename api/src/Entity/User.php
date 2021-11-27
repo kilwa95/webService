@@ -26,19 +26,20 @@ class User implements UserInterface,JWTUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"read:customer:item"})
+     * @Groups({"read:customer:item","read:user:collection"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"read:customer:item","write:customer:user"})
+     * @Groups({"read:customer:item","write:customer:user","read:user:collection"})
      * @Assert\Email()
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"read:user:collection"})
      */
     private $roles = [];
 
@@ -51,7 +52,8 @@ class User implements UserInterface,JWTUserInterface
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:customer:item","write:customer:user"})
+     * @Groups({"read:customer:item","write:customer:user","read:user:collection"})
+     * 
      */
     private $phone;
 
@@ -62,23 +64,25 @@ class User implements UserInterface,JWTUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:customer:item","write:customer:user"})
+     * @Groups({"read:customer:item","write:customer:user","read:user:collection"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:customer:item","write:customer:user"})
+     * @Groups({"read:customer:item","write:customer:user","read:user:collection"})
      */
     private $lastName;
 
     /**
      * @ORM\OneToMany(targetEntity=Request::class, mappedBy="customer")
+     * @Groups({"read:user:collection"})
      */
     private $requests;
 
     /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="admin")
+     * @Groups({"read:user:collection"})
      */
     private $products;
 

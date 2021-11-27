@@ -17,13 +17,13 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"read:product:collection"})
+     * @Groups({"read:product:collection","read:user:collection"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:product:collection","write:product:collection","edit:product:item"})
+     * @Groups({"read:product:collection","write:product:collection","edit:product:item","read:user:collection"})
      */
     private $name;
 
@@ -35,7 +35,7 @@ class Product
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"read:product:collection","write:product:collection","edit:product:item"})
+     * @Groups({"read:product:collection","write:product:collection","edit:product:item",})
      */
     private $description;
 

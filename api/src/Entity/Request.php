@@ -17,25 +17,25 @@ class Request
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"read:request:collection"})
+     * @Groups({"read:request:collection","read:user:collection"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:request:collection","write:request:collection","edit:request:item"})
+     * @Groups({"read:request:collection","write:request:collection","edit:request:item","read:user:collection"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:request:collection","write:request:collection","edit:request:item"})
+     * @Groups({"read:request:collection","write:request:collection","edit:request:item","read:user:collection"})
      */
     private $comment;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:request:collection"})
+     * @Groups({"read:request:collection","read:user:collection"})
      */
     private $status;
 

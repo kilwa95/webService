@@ -2,6 +2,8 @@ App\Entity\User:
   attributes:
     denormalization_context:
       groups: ['write:customer:user']
+    normalization_context:
+      groups: ['read:user:collection']
   collectionOperations:
     get: ~
     customers:
