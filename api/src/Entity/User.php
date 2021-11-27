@@ -3,17 +3,22 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
   
-
-
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @ApiResource()
+ * @UniqueEntity(fields={"password"}, message="It looks like your already have an account!")
  */
 class User implements UserInterface,JWTUserInterface
 {
@@ -21,11 +26,14 @@ class User implements UserInterface,JWTUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"read:customer:item"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"read:customer:item","write:customer:user"})
+     * @Assert\Email()
      */
     private $email;
 
@@ -37,11 +45,13 @@ class User implements UserInterface,JWTUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups({"write:customer:user"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read:customer:item","write:customer:user"})
      */
     private $phone;
 
@@ -52,13 +62,26 @@ class User implements UserInterface,JWTUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:customer:item","write:customer:user"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:customer:item","write:customer:user"})
      */
     private $lastName;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="customer")
+     */
+    private $requests;
+
+    public function __construct()
+    {
+        $this->requests = new ArrayCollection();
+        $this->enable = true;
+    }
 
     public function getId(): ?int
     {
@@ -85,6 +108,11 @@ class User implements UserInterface,JWTUserInterface
     public function getUsername(): string
     {
         return (string) $this->email;
+    }
+    public function setUsername(string $email): self
+    {
+        $this->email = $email;
+        return $this;
     }
 
     /**
@@ -190,6 +218,37 @@ class User implements UserInterface,JWTUserInterface
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Request[]
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(Request $request): self
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests[] = $request;
+            $request->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(Request $request): self
+    {
+        if ($this->requests->contains($request)) {
+            $this->requests->removeElement($request);
+            // set the owning side to null (unless already changed)
+            if ($request->getCustomer() === $this) {
+                $request->setCustomer(null);
+            }
+        }
 
         return $this;
     }

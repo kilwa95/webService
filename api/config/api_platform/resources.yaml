@@ -1,6 +1,9 @@
 App\Entity\User:
+  attributes:
+    denormalization_context:
+      groups: ['write:customer:user']
   collectionOperations:
-    get:
+    get: ~
     customers:
       path: /customers
       method: POST
@@ -13,11 +16,30 @@ App\Entity\User:
       path: /providers
       method: POST
       controller: App\Controller\ProviderCreateController
-    userConnected:
-      method: GET
-      path: /users/connected
-      controller: App\Controller\UserConnectedController
-      pagination_enabled: false
+
+App\Entity\Request:
+  attributes:
+    normalization_context:
+      groups: ['read:customer:item','read:request:collection']
+    denormalization_context:
+      groups: [write:request:collection]
+  collectionOperations:
+     get: ~
+     post:
+      security_post_denormalize: 'is_granted("REQUEST_CREATE",object)'
+      security_message: 'only customers can create requests.'
+  itemOperations:
+    get: ~
+    delete:
+      security: 'is_granted("REQUEST_DELETE",object)'
+      security_message: 'only customer how create this request can delete him.'
+    put:
+      security: 'is_granted("REQUEST_EDIT",object)'
+      security_message: 'only customer how create this request can edit him.'
+
+
+ 
+   
 
      
  
