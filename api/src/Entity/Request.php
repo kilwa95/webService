@@ -23,13 +23,13 @@ class Request
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:request:collection","write:request:collection"})
+     * @Groups({"read:request:collection","write:request:collection","edit:request:item"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:request:collection","write:request:collection"})
+     * @Groups({"read:request:collection","write:request:collection","edit:request:item"})
      */
     private $comment;
 

@@ -34,6 +34,8 @@ App\Entity\Request:
       security: 'is_granted("REQUEST_DELETE",object)'
       security_message: 'only customer how create this request can delete him.'
     put:
+      denormalization_context:
+        groups: [edit:request:item]
       security: 'is_granted("REQUEST_EDIT",object)'
       security_message: 'only customer how create this request can edit him.'
 
