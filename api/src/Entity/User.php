@@ -77,10 +77,16 @@ class User implements UserInterface,JWTUserInterface
      */
     private $requests;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="admin")
+     */
+    private $products;
+
     public function __construct()
     {
         $this->requests = new ArrayCollection();
         $this->enable = true;
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -247,6 +253,37 @@ class User implements UserInterface,JWTUserInterface
             // set the owning side to null (unless already changed)
             if ($request->getCustomer() === $this) {
                 $request->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setAdmin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->contains($product)) {
+            $this->products->removeElement($product);
+            // set the owning side to null (unless already changed)
+            if ($product->getAdmin() === $this) {
+                $product->setAdmin(null);
             }
         }
 

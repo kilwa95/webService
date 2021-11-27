@@ -2,7 +2,8 @@ POST https://localhost:8443/login
 Content-Type: application/json
 
 {
-  "email": "david@gmail.com",
-  "password": "david"
+  "email": "admin@gmail.com",
+  "password": "admin"
 }
 # Bearer
+# /api/users/8
