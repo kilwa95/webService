@@ -2,6 +2,8 @@ App\Entity\User:
   attributes:
     denormalization_context:
       groups: ['write:customer:user']
+    normalization_context:
+      groups: ['read:user:collection']
   collectionOperations:
     get: ~
     customers:
@@ -38,6 +40,29 @@ App\Entity\Request:
         groups: [edit:request:item]
       security: 'is_granted("REQUEST_EDIT",object)'
       security_message: 'only customer how create this request can edit him.'
+
+App\Entity\Product:
+  attributes:
+    normalization_context:
+      groups: ['read:product:collection']
+    denormalization_context:
+      groups: ['write:product:collection']
+  collectionOperations:
+     get: ~
+     post:
+      security_post_denormalize: 'is_granted("PRODUCT_CREATE",object)'
+      security_message: 'only admins can create products.'
+  itemOperations:
+    get: ~
+    delete:
+      security: 'is_granted("PRODUCT_DELETE",object)'
+      security_message: 'only admins who create this product can delete him.'
+    put:
+      denormalization_context:
+        groups: ['edit:product:item']
+      security: 'is_granted("PRODUCT_EDIT",object)'
+      security_message: 'only admins who create this product can edit him.'
+
 
 
  
