@@ -37,7 +37,7 @@ class Catalog
     /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:catalog:collection"})
+     * @Groups({"read:catalog:collection","write:catalog:collection"})
      */
     private $provider;
 
@@ -50,6 +50,7 @@ class Catalog
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->createAt = new \DateTime();
     }
 
     public function getId(): ?int

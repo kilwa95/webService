@@ -30,13 +30,13 @@ class User implements UserInterface,JWTUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"read:customer:item","read:user:collection"})
+     * @Groups({"read:customer:item","read:user:collection","read:catalog:collection"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"read:customer:item","write:customer:user","read:user:collection"})
+     * @Groups({"read:customer:item","write:customer:user","read:user:collection","read:catalog:collection"})
      * @Assert\Email()
      */
     private $email;
@@ -68,13 +68,13 @@ class User implements UserInterface,JWTUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:customer:item","write:customer:user","read:user:collection"})
+     * @Groups({"read:customer:item","write:customer:user","read:user:collection","read:catalog:collection"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:customer:item","write:customer:user","read:user:collection"})
+     * @Groups({"read:customer:item","write:customer:user","read:user:collection","read:catalog:collection"})
      */
     private $lastName;
 
