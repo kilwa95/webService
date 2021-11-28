@@ -67,11 +67,17 @@ class Product
      */
     private $requests;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Catalog::class, mappedBy="products")
+     */
+    private $catalogs;
+
     public function __construct()
     {
         $this->createAt = new \DateTime();
         $this->enable = true;
         $this->requests = new ArrayCollection();
+        $this->catalogs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -174,6 +180,34 @@ class Product
         if ($this->requests->contains($request)) {
             $this->requests->removeElement($request);
             $request->removeProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Catalog[]
+     */
+    public function getCatalogs(): Collection
+    {
+        return $this->catalogs;
+    }
+
+    public function addCatalog(Catalog $catalog): self
+    {
+        if (!$this->catalogs->contains($catalog)) {
+            $this->catalogs[] = $catalog;
+            $catalog->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCatalog(Catalog $catalog): self
+    {
+        if ($this->catalogs->contains($catalog)) {
+            $this->catalogs->removeElement($catalog);
+            $catalog->removeProduct($this);
         }
 
         return $this;
