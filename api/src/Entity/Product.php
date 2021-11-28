@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass=ProductRepository::class)
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact","name": "partial","description": "partial"})
  */
 class Product
 {
@@ -57,10 +62,16 @@ class Product
      */
     private $admin;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Request::class, mappedBy="products")
+     */
+    private $requests;
+
     public function __construct()
     {
         $this->createAt = new \DateTime();
         $this->enable = true;
+        $this->requests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -136,6 +147,34 @@ class Product
     public function setAdmin(?User $admin): self
     {
         $this->admin = $admin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Request[]
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(Request $request): self
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests[] = $request;
+            $request->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(Request $request): self
+    {
+        if ($this->requests->contains($request)) {
+            $this->requests->removeElement($request);
+            $request->removeProduct($this);
+        }
 
         return $this;
     }

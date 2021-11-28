@@ -21,10 +21,9 @@ class UserVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['USER_CREATE', 'USER_READ', 'USER_EDIT', 'USER_DELETE'])
+        return in_array($attribute, ['CUSTOMER_EDIT', 'PROVIDER_EDIT', 'ADMIN_DELETE'])
             && $subject instanceof \App\Entity\User;
     }
-
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         $user = $token->getUser();
@@ -35,13 +34,18 @@ class UserVoter extends Voter
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
-            case 'USER_DELETE':
+            case 'ADMIN_DELETE':
                 if ($this->security->isGranted('ROLE_ADMIN')) {
                     return true;
                 }
                 break;
-            case 'USER_EDIT':
-                if ($this->security->isGranted('ROLE_ADMIN')) {
+            case 'CUSTOMER_EDIT':
+                if ($this->security->isGranted('ROLE_CUSTOMER')&& $subject->getCustomer()->getEmail() === $user->getEmail()) {
+                    return true;
+                }
+                break;
+            case 'PROVIDER_EDIT':
+                if ($this->security->isGranted('ROLE_PROVIDER')&& $subject->getProvider()->getEmail() === $user->getEmail()) {
                     return true;
                 }
                 break;

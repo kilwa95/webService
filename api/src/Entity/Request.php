@@ -3,12 +3,17 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\RequestRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact","name": "partial","comment": "partial"})
  * @ORM\Entity(repositoryClass=RequestRepository::class)
  */
 class Request
@@ -47,19 +52,27 @@ class Request
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="requests")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:customer:item","write:request:collection"})
+     * @Groups({"read:customer:item","write:request:collection","read:request:collection"})
      */
     private $customer;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="requests")
+     * @Groups({"read:request:collection"})
      */
     private $provider;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="requests")
+     * @Groups({"read:request:collection"})
+     */
+    private $products;
 
     public function __construct()
     {
         $this->createAt = new \DateTime();
         $this->status = "created";
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -135,6 +148,32 @@ class Request
     public function setProvider(?User $provider): self
     {
         $this->provider = $provider;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->contains($product)) {
+            $this->products->removeElement($product);
+        }
 
         return $this;
     }

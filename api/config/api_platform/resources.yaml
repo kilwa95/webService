@@ -1,15 +1,19 @@
 App\Entity\User:
   attributes:
+    pagination_items_per_page: 10
+    pagination_client_enabled: true
     denormalization_context:
       groups: ['write:customer:user']
     normalization_context:
       groups: ['read:user:collection']
   collectionOperations:
-    get: ~
+    get: 
     customers:
       path: /customers
       method: POST
       controller: App\Controller\CustomerCreateController
+      openapi_context:
+        summary: Create a new customer
     admins:
       path: /amdins
       method: POST
@@ -18,9 +22,16 @@ App\Entity\User:
       path: /providers
       method: POST
       controller: App\Controller\ProviderCreateController
+  itemOperations:
+    get: 
+    delete:
+      security: 'is_granted("ADMIN_DELETE",object)'
+      security_message: 'only admins can delete users.'
 
 App\Entity\Request:
   attributes:
+    pagination_items_per_page: 10
+    pagination_client_enabled: true
     normalization_context:
       groups: ['read:customer:item','read:request:collection']
     denormalization_context:
@@ -43,6 +54,8 @@ App\Entity\Request:
 
 App\Entity\Product:
   attributes:
+    pagination_items_per_page: 10
+    pagination_client_enabled: true
     normalization_context:
       groups: ['read:product:collection']
     denormalization_context:
