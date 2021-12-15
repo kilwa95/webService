@@ -1,6 +1,6 @@
 <template>
   <div class="vue-tempalte">
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="login">
       <h3>Sign In</h3>
       <div class="form-group">
         <label>Email address</label>
@@ -38,6 +38,9 @@
 
 
 <script>
+import Cookies from "js-cookie";
+import { getServerHost } from "../utils/api";
+
 export default {
   data() {
     return {
@@ -46,13 +49,39 @@ export default {
     };
   },
   methods: {
+    login() {
+      var axios = require("axios");
+      var FormData = require("form-data");
+      var data = new FormData();
+      data.append("email", this.email);
+      data.append("password", this.password);
+      var config = {
+        method: "post",
+        url: getServerHost() + "/login",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "X-CSRFToken": Cookies.get("csrftoken"),
+        },
+        data: data,
+      };
+      axios(config)
+        .then((response) => {
+          if (response["data"]["status"] == true) {
+            console.log(response);
+            // store.commit("getLoggedUser", response.data);
+          } else {
+            console.log(response);
+            // store.commit("getLoggedUser", response.data);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
     handleChange: function (event) {
       this[event.target.name] = event.target.value;
     },
-    handleSubmit: function (event) {
-      const data = new FormData(event.target);
-      console.log(data);
-    },
+
     avoidEnter: () => console.log("Enter avoided"),
   },
   components: {},
