@@ -110,6 +110,16 @@ services:
         published: 443
         protocol: tcp
 
+  frontend:
+    image: node:alpine3.10
+    ports:
+      - 8080:8080
+    environment: {}
+    volumes:
+      - ./frontend:/home/node/app
+    working_dir: /home/node/app
+    command: sh -c "npm install; npm run serve"
+
   admin:
     build:
       context: ./admin
