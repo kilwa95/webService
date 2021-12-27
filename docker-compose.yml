@@ -39,6 +39,23 @@ services:
     volumes:
       - ./api/public:/srv/api/public:ro
 
+  event-bus:
+    build:
+      context: ./event-bus
+      dockerfile: Dockerfile.dev
+    environment:
+      PORT: 4005
+      DATABASE_URL: "postgres://root:password@db_event_bus/app"
+      SECRET_KEY: RXCT34ZE5GFDSFD756
+    volumes:
+      - type: bind
+        source: ./event-bus/src
+        target: /app/src
+    ports:
+      - 4005:4005
+    depends_on:
+      - db_event_bus
+
   vulcain:
     image: dunglas/vulcain
     environment:
@@ -63,12 +80,21 @@ services:
       - POSTGRES_USER=api-platform
     volumes:
       - db-data:/var/lib/postgresql/data:rw
-      # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./api/docker/db/data:/var/lib/postgresql/data:rw
     ports:
       - target: 5432
         published: 5432
         protocol: tcp
+
+  db_event_bus:
+    image: postgres:alpine
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db-data-event-bus:/var/lib/postgresql/data:rw
 
   mercure:
     image: dunglas/mercure
@@ -150,4 +176,5 @@ services:
 
 volumes:
   db-data: {}
+  db-data-event-bus: {}
   dev-certs: {}
