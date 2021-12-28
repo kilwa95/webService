@@ -44,6 +44,7 @@ services:
       context: ./event-bus
       dockerfile: Dockerfile.dev
     environment:
+      API_URL: https://localhost:8443'
       PORT: 4005
       DATABASE_URL: "postgres://root:password@db_event_bus/app"
       SECRET_KEY: RXCT34ZE5GFDSFD756

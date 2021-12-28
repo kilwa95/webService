@@ -12,7 +12,7 @@ app.post("/events",async (req, res) => {
     const eventcreate = new Event(event);
     await eventcreate.save();
 
-    axios.post("https://localhost:8443/api/events", event).catch((err) => {
+    axios.post(`${process.env.API_URL}/api/events`, event).catch((err) => {
       console.log(err.message);
     });
     
