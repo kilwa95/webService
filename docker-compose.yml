@@ -7,6 +7,7 @@ x-cache-from:
       - ${PHP_IMAGE:-quay.io/api-platform/php}
 
 services:
+
   php:
     build:
       context: ./api
@@ -57,6 +58,23 @@ services:
     depends_on:
       - db_event_bus
 
+  cart-api:
+    build:
+      context: ./cart-api
+      dockerfile: Dockerfile.dev
+    environment:
+      QUERY_URL: https://localhost:4001'
+      PORT: 4001
+      MONGO_URL: "mongodb://root:password@db-mongo-cart/app"
+    volumes:
+      - type: bind
+        source: ./cart-api/src
+        target: /app/src
+    ports:
+      - 4001:4001
+    depends_on:
+      - mongo
+
   vulcain:
     image: dunglas/vulcain
     environment:
@@ -97,45 +115,16 @@ services:
     volumes:
       - db-data-event-bus:/var/lib/postgresql/data:rw
 
-  mercure:
-    image: dunglas/mercure
-    environment:
-      - ALLOW_ANONYMOUS=1
-      - CERT_FILE=/certs/localhost.crt
-      - CORS_ALLOWED_ORIGINS=*
-      - DEMO=1
-      - JWT_KEY=!ChangeMe!
-      - KEY_FILE=/certs/localhost.key
-      - PUBLISH_ALLOWED_ORIGINS=https://localhost:1337 # required for publishing from the demo page
-    depends_on:
-      - dev-tls
-    volumes:
-      - dev-certs:/certs:ro,nocopy
+  db-mongo-cart:
+    image: mongo
     ports:
-      - target: 443
-        published: 1337
-        protocol: tcp
-
-  client:
-    build:
-      context: ./client
-      target: api_platform_client_development
-      cache_from:
-        - ${CLIENT_IMAGE:-quay.io/api-platform/client}
-    image: ${CLIENT_IMAGE:-quay.io/api-platform/client}
-    tty: true # https://github.com/facebook/create-react-app/issues/8688
+      - 27017:27017
     environment:
-      - API_PLATFORM_CLIENT_GENERATOR_ENTRYPOINT=http://api
-      - API_PLATFORM_CLIENT_GENERATOR_OUTPUT=src
-    depends_on:
-      - dev-tls
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
-      - ./client:/usr/src/client:rw,cached
-      - dev-certs:/usr/src/client/node_modules/webpack-dev-server/ssl:rw,nocopy
-    ports:
-      - target: 3000
-        published: 443
-        protocol: tcp
+      - ./SampleCollections:/usr/local/sampleCollections
+    working_dir: /usr/local/sampleCollections
 
   frontend:
     image: node:alpine3.10
@@ -146,24 +135,6 @@ services:
       - ./frontend:/home/node/app
     working_dir: /home/node/app
     command: sh -c "npm install; npm run serve"
-
-  admin:
-    build:
-      context: ./admin
-      target: api_platform_admin_development
-      cache_from:
-        - ${ADMIN_IMAGE:-quay.io/api-platform/admin}
-    image: ${ADMIN_IMAGE:-quay.io/api-platform/admin}
-    tty: true # https://github.com/facebook/create-react-app/issues/8688
-    depends_on:
-      - dev-tls
-    volumes:
-      - ./admin:/usr/src/admin:rw,cached
-      - dev-certs:/usr/src/admin/node_modules/webpack-dev-server/ssl:rw,nocopy
-    ports:
-      - target: 3000
-        published: 444
-        protocol: tcp
 
   dev-tls:
     build:

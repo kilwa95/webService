@@ -6,4 +6,24 @@ Content-Type: application/json
   "password": "admin"
 }
 # Bearer
-# /api/users/8
+
+###
+POST http://localhost:4001/carts
+Content-Type: application/json
+
+{
+  "customer": {
+    "id": 1,
+    "name": "khaled"
+  },
+  "products":[
+    {
+      "name": "monsttre",
+      "description": "khlajjj"
+    }
+  ]
+}
+###
+GET http://localhost:4001/carts/61cb7202608839424b7d0a80/customer
+Content-Type: application/json
+###
