@@ -7,7 +7,6 @@ x-cache-from:
       - ${PHP_IMAGE:-quay.io/api-platform/php}
 
 services:
-
   php:
     build:
       context: ./api
@@ -25,8 +24,6 @@ services:
     volumes:
       - ./api:/srv/api:rw,cached
       - ./api/docker/php/conf.d/api-platform.dev.ini:/usr/local/etc/php/conf.d/api-platform.ini
-      # if you develop on Linux, you may use a bind-mounted host directory instead
-      # - ./api/var:/srv/api/var:rw
       - dev-certs:/certs:ro,nocopy
 
   api:
@@ -73,7 +70,24 @@ services:
     ports:
       - 4001:4001
     depends_on:
-      - mongo
+      - db-mongo-cart
+
+  transaction-api:
+    build:
+      context: ./transaction-api
+      dockerfile: Dockerfile.dev
+    environment:
+      QUERY_URL: https://localhost:4002'
+      PORT: 4002
+      MONGO_URL: "mongodb://root:password@db-transaction/app"
+    volumes:
+      - type: bind
+        source: ./transaction-api/src
+        target: /app/src
+    ports:
+      - 4002:4002
+    depends_on:
+      - db-transaction
 
   vulcain:
     image: dunglas/vulcain
@@ -119,6 +133,17 @@ services:
     image: mongo
     ports:
       - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./SampleCollections:/usr/local/sampleCollections
+    working_dir: /usr/local/sampleCollections
+
+  db-transaction:
+    image: mongo
+    ports:
+      - 27018:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
