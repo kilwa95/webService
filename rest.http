@@ -32,7 +32,13 @@ POST http://localhost:4002/transactions
 Content-Type: application/json
 
 {
-  "priceTotal": 1000 ,
+  "priceTotal": 1000,
+  "delivery":{
+    "id": 1,
+    "address": "35 quai de grenelle",
+    "city": "paris",
+    "country": "france"
+  },
   "cart":[
     {
       "name": "monsttre",

@@ -4,16 +4,8 @@ const Transaction = require('../models/Transaction');
 exports.saveTransaction = async (data) => {
     try {
         const {priceTotal,delivery,cart} = data;
-        return Transaction.findOneAndReplace({},
-            {
-            priceTotal:priceTotal,
-            delivery:delivery,
-            cart:cart,
-            status:"pending"
-            },{
-            upsert: true,
-            new: true,
-            });
+        const transaction = await Transaction.create({ priceTotal,delivery,cart });
+        return transaction;
     } catch (error) {
         console.error(error);
     }

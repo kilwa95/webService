@@ -4,10 +4,8 @@ const Cart = require('../models/Cart');
 exports.saveCart = async (data) => {
     try {
         const {products,customer} = data;
-        return Cart.findOneAndReplace({},{products:products,customer:customer},{
-            upsert: true,
-            new: true,
-            });
+        const cart = await Cart.create({ products,customer });
+        return cart;
     } catch (error) {
         console.error(error);
     }
