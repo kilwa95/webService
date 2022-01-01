@@ -1,13 +1,11 @@
- const {saveCart,findCartById} = require('../queries/cart.querie');
+const axios = require("axios");
+const {saveCart,findCartById} = require('../queries/cart.querie');
 
  exports.createCart = async (req, res, next) => {
         const { customer, products } = req.body;
         try {
             const cart = await saveCart({ customer, products });
-            res.status(200).json({
-                message: 'Cart created successfully',
-                cart
-            });
+            return next();
         } catch (error) {
             next(error);
         }
@@ -36,6 +34,29 @@ exports.createCartEvent = async (req, res, next) => {
             products
             }
     });
+    } catch (error) {
+        next(error);
+    }
+}
+
+exports.handleEvent = async (req, res, next) => {
+    const { type, data } = req.body;
+    try {
+        console.log(type, data);
+        // switch (type) {
+        //     case 'CartCreated':
+        //         const { customer, products } = data;
+        //         const cart = await saveCart({ customer, products });
+        //         res.status(200).json({
+        //             message: 'Cart created successfully',
+        //             cart
+        //         });
+        //         break;
+        //     default:
+        //         res.status(400).json({
+        //             message: 'Unknown event type'
+        //         });
+        // }
     } catch (error) {
         next(error);
     }

@@ -11,8 +11,10 @@ app.post("/events",async (req, res) => {
     const event = req.body;
     const eventcreate = new Event(event);
     await eventcreate.save();
-
-    axios.post(`https://localhost:8443/api/events`, event).catch((err) => {
+    // // axios.post(`https://localhost:8443/api/events`, event).catch((err) => {
+    // //   console.log(err.message);
+    // // });
+    axios.post(`https://172.22.0.12:4001/events`, event).catch((err) => {
       console.log(err.message);
     });
     

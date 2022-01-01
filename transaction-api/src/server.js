@@ -40,7 +40,6 @@ app.listen(port, async () => {
     console.log(`Starting : http://localhost:${port}`);
     try {
       const result = await axios.get("http://172.22.0.10:4005/events");
-      console.log(result.data);
       for (let event of result.data) {
         handleEvent(event.type, event.data);
       }
