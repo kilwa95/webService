@@ -6,4 +6,49 @@ Content-Type: application/json
   "password": "admin"
 }
 # Bearer
-# /api/users/8
+
+###
+POST http://localhost:4001/carts
+Content-Type: application/json
+
+{
+  "customer": {
+    "id": 1,
+    "name": "khaled"
+  },
+  "products":[
+    {
+      "name": "monsttre",
+      "description": "khlajjj"
+    }
+  ]
+}
+###
+GET http://localhost:4001/carts/61cb7202608839424b7d0a80/customer
+Content-Type: application/json
+###
+POST http://localhost:4002/transactions
+Content-Type: application/json
+
+{
+  "priceTotal": 1000,
+  "delivery":{
+    "id": 1,
+    "address": "35 quai de grenelle",
+    "city": "paris",
+    "country": "france"
+  },
+  "cart":[
+    {
+      "name": "monsttre",
+      "description": "sami abdulhalim"
+    },
+    {
+      "name": "david",
+      "description": "khaled abd halim "
+    }
+  ]
+}
+###
+GET http://localhost:4002/transactions
+
