@@ -1,40 +1,55 @@
 
 <template>
-  <table>
-    <thead>
-      <tr>
-        <th
-          v-for="key in columns"
-          :key="key.name"
-          @click="sortBy(key)"
-          :class="{ active: sortKey == key }"
-        >
-          {{ key | capitalize }}
+  <div class="p-3">
+    <div class="overflow-x-auto">
+      <table class="table-auto w-full">
+        <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+          <tr>
+            <th
+              v-for="key in columns"
+              :key="key.name"
+              @click="sortBy(key)"
+              :class="{ active: sortKey == key } + 'p-2 whitespace-nowrap'"
+            >
+              <div class="font-semibold text-left">
+                {{ key | capitalize }}
+              </div>
+            </th>
+          </tr>
+        </thead>
 
-          <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
-          </span>
-        </th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr v-for="product in filteredProductsOrders" :key="product.name">
-        <!-- <td>
-          {{ product.to }}
-        </td>
-        <td>
-          {{ product.category }}
-        </td>
-        <td>
-          {{ product.name }}
-        </td> -->
-
-        <td v-for="key in columns" :key="key">
-          {{ product[key] }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        <tbody class="text-sm divide-y divide-gray-100">
+          <tr v-for="product in filteredProductsOrders" :key="product.name">
+            <td class="p-2 whitespace-nowrap" v-for="key in columns" :key="key">
+              <div class="flex items-center">
+                <!-- <div class="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
+                  <img
+                    class="rounded-full"
+                    src="https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-05.jpg"
+                    width="40"
+                    height="40"
+                    alt="Alex Shatov"
+                  />
+                </div> -->
+                <div class="font-medium text-gray-800">{{ product[key] }}</div>
+              </div>
+            </td>
+            <td class="p-2 whitespace-nowrap">
+              <div class="text-left">{{ product[key] }}</div>
+            </td>
+            <td class="p-2 whitespace-nowrap">
+              <div class="text-left font-medium text-green-500">
+                {{ product[key] }}
+              </div>
+            </td>
+            <!-- <td class="p-2 whitespace-nowrap">
+              <div class="text-lg text-center">🇺 {{ product[key] }}</div>
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
 
 
