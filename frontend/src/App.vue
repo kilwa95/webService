@@ -23,6 +23,18 @@
             >
           </li>
         </ul>
+        <ul class="nav navbar-nav flex-row float-left">
+          <li class="nav-item">
+            <router-link class="nav-link pr-3" to="/dashboard"
+              >Dashboard</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link class="btn btn-outline-primary" to="/create"
+              >Create</router-link
+            >
+          </li>
+        </ul>
       </div>
     </nav>
     <!-- Main -->
@@ -39,6 +51,15 @@
 <script>
 export default {
   name: "App",
+  // Will be executed on page load
+  mounted() {
+    this.isConnected();
+  },
+  methods: {
+    isConnected() {
+      console.log("sa");
+    },
+  },
   components: {},
 };
 </script>
