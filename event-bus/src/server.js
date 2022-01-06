@@ -11,14 +11,15 @@ app.post("/events",async (req, res) => {
     const event = req.body;
     const eventcreate = new Event(event);
     await eventcreate.save();
-    // // axios.post(`https://localhost:8443/api/events`, event).catch((err) => {
-    // //   console.log(err.message);
-    // // });
-    axios.post(`https://172.22.0.12:4001/events`, event).catch((err) => {
+    axios.post("http://172.22.0.11:4001/events", event).catch((err) => {
       console.log(err.message);
     });
-    
-    res.send({ status: "OK" });
+    axios.post("http://172.22.0.12:4242/events", event).catch((err) => {
+      console.log(err.message);
+    });
+    axios.post("http://172.22.0.10:4002/events", event).catch((err) => {
+      console.log(err.message);
+    });
   });
 
 app.get("/events", async (req, res) => {
