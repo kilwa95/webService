@@ -42,7 +42,10 @@ services:
       context: ./event-bus
       dockerfile: Dockerfile.dev
     environment:
-      API_URL: https://localhost:8443'
+      API_URL: https://api:8443
+      CART_URL: https://cart-api:4001
+      TRANSACTION_URL: https://transaction-api:4002
+      PAYEMENT_URL: https://payement-api:4242
       PORT: 4005
       DATABASE_URL: "postgres://root:password@db_event_bus/app"
       SECRET_KEY: RXCT34ZE5GFDSFD756
@@ -60,7 +63,7 @@ services:
       context: ./cart-api
       dockerfile: Dockerfile.dev
     environment:
-      QUERY_URL: https://localhost:4001'
+      EVENT_BUS: https://event-bus:4005
       PORT: 4001
       MONGO_URL: "mongodb://root:password@db-mongo-cart/app"
     volumes:
@@ -77,7 +80,6 @@ services:
       context: ./transaction-api
       dockerfile: Dockerfile.dev
     environment:
-      QUERY_URL: https://localhost:4002'
       PORT: 4002
       MONGO_URL: "mongodb://root:password@db-transaction/app"
     volumes:
@@ -88,6 +90,22 @@ services:
       - 4002:4002
     depends_on:
       - db-transaction
+
+  payement-api:
+    build:
+      context: ./payement-api/server
+      dockerfile: Dockerfile.dev
+    environment:
+      PORT: 4242
+      MONGO_URL: "mongodb://root:password@db-payement/app"
+    volumes:
+      - type: bind
+        source: ./payement-api/server/src
+        target: /app/src
+    ports:
+      - 4242:4242
+    depends_on:
+      - db-payement
 
   vulcain:
     image: dunglas/vulcain
@@ -144,6 +162,17 @@ services:
     image: mongo
     ports:
       - 27018:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./SampleCollections:/usr/local/sampleCollections
+    working_dir: /usr/local/sampleCollections
+
+  db-payement:
+    image: mongo
+    ports:
+      - 27019:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password

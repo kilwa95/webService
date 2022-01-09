@@ -51,4 +51,12 @@ Content-Type: application/json
 }
 ###
 GET http://localhost:4002/transactions
+###
+POST http://localhost:4242/create-payment-intent
+Content-Type: application/json
+
+{
+  "paymentMethodType": "card",
+  "currency": 1000
+}
 

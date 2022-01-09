@@ -5,9 +5,18 @@ const {saveCart,findCartById} = require('../queries/cart.querie');
         const { customer, products } = req.body;
         try {
             const cart = await saveCart({ customer, products });
-            return next();
+            if (cart) {
+                return next();
+            }
+            else {
+                res.status(400).json({
+                    message: 'Cart not created'
+                });
+            }
+           
         } catch (error) {
-            next(error);
+           console.log(error);
+           res.status(500).json('internal server error');
         }
  }
 
@@ -27,36 +36,26 @@ exports.getCartByCustomerId = async (req, res, next) => {
 exports.createCartEvent = async (req, res, next) => {
     const { customer, products } = req.body;
     try {
-       return await axios.post('http://172.22.0.10:4005/events', {
+        await axios.post(`http://172.22.0.9:4005/events`, {
             type: 'CartCreated',
             data: {
             customer,
             products
             }
     });
+    return res.status(200).json({
+        message: 'Cart created successfully',
+    })
     } catch (error) {
-        next(error);
+       console.log(error.message);
+         res.status(500).json('internal server error');
     }
 }
 
 exports.handleEvent = async (req, res, next) => {
     const { type, data } = req.body;
     try {
-        console.log(type, data);
-        // switch (type) {
-        //     case 'CartCreated':
-        //         const { customer, products } = data;
-        //         const cart = await saveCart({ customer, products });
-        //         res.status(200).json({
-        //             message: 'Cart created successfully',
-        //             cart
-        //         });
-        //         break;
-        //     default:
-        //         res.status(400).json({
-        //             message: 'Unknown event type'
-        //         });
-        // }
+        console.log(req.body);
     } catch (error) {
         next(error);
     }
