@@ -28,6 +28,24 @@ exports.createPayementIntent = async (req, res, next) => {
       }
 }
 
+exports.createPayement = async (req, res, next) => {
+    // try {
+    //     const {paymentMethodId,paymentIntentId} = req.body;
+    //     const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId,{
+    //         payment_method: paymentMethodId
+    //     });
+    //     res.json({
+    //         clientSecret: paymentIntent.client_secret,
+    //     });
+    // } catch (e) {
+    //     return res.status(400).send({
+    //         error: {
+    //             message: e.message,
+    //         },
+    //     });
+    // }
+}
+
 
 exports.webhook = async (req, res) => {
     let data, eventType;
