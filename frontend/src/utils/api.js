@@ -4,7 +4,7 @@ export function getServerHost() {
   if (process.env.VUE_APP_BACK_HOST) {
     return process.env.VUE_APP_BACK_HOST;
   } else {
-    return "http://localhost:8443";
+    return "https://localhost:8443";
   }
 }
 

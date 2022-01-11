@@ -1,6 +1,7 @@
 
 <template>
   <div class="p-3">
+    {{ chosenProducts }}
     <div class="overflow-x-auto">
       <table class="table-auto w-full">
         <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
@@ -17,7 +18,6 @@
             </th>
           </tr>
         </thead>
-
         <tbody class="text-sm divide-y divide-gray-100">
           <tr v-for="product in filteredProductsOrders" :key="product.name">
             <td class="p-2 whitespace-nowrap" v-for="key in columns" :key="key">
@@ -45,6 +45,11 @@
             <!-- <td class="p-2 whitespace-nowrap">
               <div class="text-lg text-center">🇺 {{ product[key] }}</div>
             </td> -->
+            <td class="p-2 whitespace-nowrap" v-if="add == true">
+              <div class="text-left font-medium text-green-500">
+                <button @click="AddToCategory(product)">Add</button>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -56,18 +61,21 @@
 <script>
 export default {
   props: {
+    add: Boolean,
     products: Array,
     columns: Array,
     filterKey: String,
   },
   data: function () {
     var sortOrders = {};
+
     this.columns.forEach(function (key) {
       sortOrders[key] = 1;
     });
     return {
       sortKey: "",
       sortOrders: sortOrders,
+      chosenProducts: [],
     };
   },
   computed: {
@@ -102,6 +110,12 @@ export default {
     sortBy: function (key) {
       this.sortKey = key;
       this.sortOrders[key] = this.sortOrders[key] * -1;
+    },
+    AddToCategory(item) {
+      this.chosenProducts.push({
+        id: item.id,
+        name: item.name,
+      });
     },
   },
 };

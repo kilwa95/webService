@@ -1,34 +1,12 @@
 <template>
   <div class="main">
-    <div class="main-dashboard-container">
-      <div class="inner-block center">
-        <div>
-          <TableCollapse
-            title="Total orders :10"
-            :products="gridData"
-            :columns="gridColumns"
-          />
-        </div>
-      </div>
-      <br />
-      <div class="inner-block center">
-        <div>
-          <TableCollapse
-            title="Ongoing orders :10"
-            :products="gridData"
-            :columns="gridColumns"
-          />
-        </div>
-      </div>
-      <br />
-      <div class="inner-block center">
-        <div>
-          <TableCollapse
-            title="Completed orders :10"
-            :products="gridData"
-            :columns="gridColumns"
-          />
-        </div>
+    <div class="inner-block full-width">
+      <div>
+        <TableCollapse
+          title="My Catalogues"
+          :products="gridData"
+          :columns="gridColumns"
+        />
       </div>
     </div>
   </div>

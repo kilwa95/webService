@@ -35,6 +35,16 @@
               >
             </li>
             <li class="nav-item">
+              <router-link class="btn btn-outline-primary" to="/catalogues"
+                >My Catalogues</router-link
+              >
+            </li>
+            <li class="nav-item">
+              <router-link class="btn btn-outline-primary" to="/products"
+                >My Products</router-link
+              >
+            </li>
+            <li class="nav-item">
               <router-link class="btn btn-outline-primary" to="/create"
                 >Create</router-link
               >

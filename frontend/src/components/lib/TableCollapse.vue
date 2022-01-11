@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div @click="open = !open" class="title">{{ title }}</div>
+    <div @click="open = !open" class="title">
+      <h3 v-if="category">{{ category.name }}</h3>
+      <h3 v-else>My Products</h3>
+    </div>
     <div v-show="open" class="body">
       <form id="search">
         Search <input name="query" v-model="searchQuery" />
@@ -9,6 +12,7 @@
         :products="products"
         :columns="columns"
         :filter-key="searchQuery"
+        :add="add"
       />
     </div>
   </div>
@@ -22,10 +26,11 @@ export default {
     GridTable,
   },
   props: {
+    add: Boolean,
     products: Array,
     columns: Array,
     filterKey: String,
-    title: String,
+    category: Object,
     description: String,
     defaultBehavior: {
       type: String,

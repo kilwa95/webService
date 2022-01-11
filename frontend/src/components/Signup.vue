@@ -2,27 +2,64 @@
   <div class="vertical-center">
     <div class="inner-block">
       <div class="vue-tempalte">
-        <form>
+        <form @submit.prevent="singUp">
           <h3>Sign Up</h3>
           <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" class="form-control form-control-lg" />
+            <label>First Name</label>
+            <input
+              name="firstName"
+              type="text"
+              :value="firstName"
+              @input="handleChange"
+              class="form-control form-control-lg"
+            />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input
+              name="lastName"
+              type="text"
+              :value="lastName"
+              @input="handleChange"
+              class="form-control form-control-lg"
+            />
           </div>
           <div class="form-group">
             <label>Email address</label>
-            <input type="email" class="form-control form-control-lg" />
+            <input
+              name="email"
+              type="email"
+              :value="email"
+              @input="handleChange"
+              class="form-control form-control-lg"
+            />
           </div>
           <div class="form-group">
             <label>Phone</label>
-            <input type="Phone" class="form-control form-control-lg" />
+            <input
+              name="phone"
+              type="Phone"
+              :value="phone"
+              @input="handleChange"
+              class="form-control form-control-lg"
+            />
           </div>
           <div class="form-group">
             <label>Password</label>
-            <input type="password" class="form-control form-control-lg" />
+            <input
+              name="password"
+              type="password"
+              :value="password"
+              @input="handleChange"
+              class="form-control form-control-lg"
+            />
           </div>
-          <button type="submit" class="btn btn-dark btn-lg btn-block">
-            Sign Up
-          </button>
+          <input
+            type="submit"
+            value="Sign Up"
+            class="btn btn-dark btn-lg btn-block"
+          />
+
           <p class="forgot-password text-right">
             Already registered
             <router-link :to="{ name: 'login' }">sign in?</router-link>
@@ -34,9 +71,61 @@
 </template>
 
 <script>
+import Cookies from "js-cookie";
+import { getServerHost } from "../utils/api";
 export default {
-  data() {
-    return {};
+  data: () => ({
+    lastName: "",
+    firstName: "",
+    email: "",
+    phone: "",
+    password: "",
+  }),
+  methods: {
+    singUp(event) {
+      var axios = require("axios");
+      var FormData = require("form-data");
+      const data = new FormData(event.target);
+      data.append("lastName", this.lastName);
+      data.append("firstName", this.firstName);
+      data.append("email", this.email);
+      data.append("phone", this.phone);
+      data.append("password", this.password);
+      var config = {
+        method: "post",
+        url: getServerHost() + "/api/users",
+        headers: {
+          "X-CSRFToken": Cookies.get("csrftoken"),
+        },
+        data: {
+          lastName: data.get("lastName"),
+          firstName: data.get("firstName"),
+          email: data.get("email"),
+          phone: parseInt(data.get("phone")),
+          password: data.get("password"),
+        },
+      };
+      axios(config)
+        .then((response) => {
+          if (response["status"] == 201) {
+            this.$router.push("login");
+          }
+        })
+        .catch((e) => {
+          console.log(data);
+          console.log(e);
+        });
+    },
+    handleChange: function (event) {
+      this[event.target.name] = event.target.value;
+    },
+    handleSubmit: function (event) {
+      const data = new FormData(event.target);
+      console.log(data.getAll());
+    },
+
+    avoidEnter: () => console.log("Enter avoided"),
   },
 };
 </script>
+/api/providers

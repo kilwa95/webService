@@ -65,7 +65,10 @@ export default {
         headers: {
           "X-CSRFToken": Cookies.get("csrftoken"),
         },
-        data: data,
+        data: {
+          email: data.get("email"),
+          password: data.get("password"),
+        },
       };
       axios(config)
         .then((response) => {

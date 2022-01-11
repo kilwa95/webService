@@ -22,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="`user`")
  * @ApiResource()
  * @ApiFilter(SearchFilter::class, properties={"id": "exact","email": "partial","firstName": "partial","lastName": "partial"})
- * @UniqueEntity(fields={"password"}, message="It looks like your already have an account!")
+ * @UniqueEntity(fields={"email"}, message="It looks like your already have an account!")
  */
 class User implements UserInterface,JWTUserInterface
 {
