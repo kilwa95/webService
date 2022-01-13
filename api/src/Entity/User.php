@@ -50,7 +50,7 @@ class User implements UserInterface,JWTUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Groups({"write:customer:user"})
+     * @Groups({"write:customer:user","read:user:collection"})
      */
     private $password;
 

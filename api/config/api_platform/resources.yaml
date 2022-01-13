@@ -47,6 +47,14 @@ App\Entity\Request:
     delete:
       security: 'is_granted("REQUEST_DELETE",object)'
       security_message: 'only customer how create this request can delete him.'
+    patch:
+      method: patch
+      path: /requests/{id}/accept
+      controller: App\Controller\RequestAcepteController
+      denormalization_context:
+        groups: [patch:request:item]
+        openapi_context:
+          summary: accept a request
     put:
       denormalization_context:
         groups: [edit:request:item]

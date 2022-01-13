@@ -58,13 +58,13 @@ class Request
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="requests")
-     * @Groups({"read:request:collection"})
+     * @Groups({"read:request:collection","patch:request:item"})
      */
     private $provider;
 
     /**
      * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="requests")
-     * @Groups({"read:request:collection"})
+     * @Groups({"read:request:collection","write:request:collection","edit:request:item"})
      */
     private $products;
 
