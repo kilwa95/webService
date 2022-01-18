@@ -43,7 +43,7 @@ class Catalog
 
     /**
      * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="catalogs")
-     * @Groups({"read:catalog:collection"})
+     * @Groups({"read:catalog:collection","edit:catalog:item"})
      */
     private $products;
 

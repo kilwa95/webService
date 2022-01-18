@@ -28,19 +28,19 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:product:collection","write:product:collection","edit:product:item","read:user:collection","read:request:collection"})
+     * @Groups({"read:product:collection","write:product:collection","edit:product:item","read:user:collection","read:request:collection","read:catalog:collection"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"read:product:collection","write:product:collection","edit:product:item","read:request:collection"})
+     * @Groups({"read:product:collection","write:product:collection","edit:product:item","read:request:collection","read:catalog:collection"})
      */
     private $weight;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"read:product:collection","write:product:collection","edit:product:item","read:request:collection"})
+     * @Groups({"read:product:collection","write:product:collection","edit:product:item","read:request:collection","read:catalog:collection"})
      */
     private $description;
 

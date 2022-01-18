@@ -20,6 +20,9 @@ app.post("/events",async (req, res) => {
     axios.post("http://172.22.0.10:4002/events", event).catch((err) => {
       console.log(err.message);
     });
+    axios.post("http://172.22.0.3:8443/api/events", event).catch((err) => {
+      console.log(err.message);
+    });
   });
 
 app.get("/events", async (req, res) => {
