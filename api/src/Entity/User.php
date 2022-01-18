@@ -43,7 +43,7 @@ class User implements UserInterface,JWTUserInterface
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"read:user:collection"})
+     * @Groups({"read:user:collection","write:customer:user"})
      */
     private $roles = [];
 
