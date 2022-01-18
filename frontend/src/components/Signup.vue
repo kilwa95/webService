@@ -71,7 +71,6 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
 import { getServerHost } from "../utils/api";
 export default {
   data: () => ({
@@ -92,11 +91,9 @@ export default {
       data.append("phone", this.phone);
       data.append("password", this.password);
       var config = {
-        method: "post",
-        url: getServerHost() + "/api/users",
-        headers: {
-          "X-CSRFToken": Cookies.get("csrftoken"),
-        },
+        method: "POST",
+        url: getServerHost() + "/api/customers",
+        headers: {},
         data: {
           lastName: data.get("lastName"),
           firstName: data.get("firstName"),
@@ -123,7 +120,6 @@ export default {
       const data = new FormData(event.target);
       console.log(data.getAll());
     },
-
     avoidEnter: () => console.log("Enter avoided"),
   },
 };

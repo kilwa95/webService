@@ -13,6 +13,7 @@
         :columns="columns"
         :filter-key="searchQuery"
         :add="add"
+        :remove="remove"
       />
     </div>
   </div>
@@ -26,6 +27,7 @@ export default {
     GridTable,
   },
   props: {
+    remove: Boolean,
     add: Boolean,
     products: Array,
     columns: Array,

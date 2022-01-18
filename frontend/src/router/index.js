@@ -1,7 +1,27 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import { getServerHost } from "../utils/api";
 
 Vue.use(VueRouter);
+
+var axios = require("axios");
+
+function requireAuth() {
+  var confi = {
+    method: "GET",
+    url: getServerHost() + "/api/users?id=1",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  axios(confi)
+    .then((response) => {
+      console.log("auth", response["data"]["hydra:member"]);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+}
 
 const routes = [
   {
@@ -15,6 +35,11 @@ const routes = [
     component: () => import("../components/Login.vue"),
   },
   {
+    path: "/requests",
+    name: "requests",
+    component: () => import("../components/Requests.vue"),
+  },
+  {
     path: "/forgot-password",
     name: "forgot-password",
     component: () => import("../components/ForgotPassword.vue"),
@@ -23,6 +48,9 @@ const routes = [
     path: "/dashboard",
     name: "dashboard",
     component: () => import("../components/Dashboard.vue"),
+    beforeEnter: (to, from, next) => {
+      requireAuth(to, from, next);
+    },
   },
   {
     path: "/products",

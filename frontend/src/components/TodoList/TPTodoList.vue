@@ -7,14 +7,16 @@
       <li v-for="item in items" :key="item.id">
         <span>
           {{ item.name }}
+          {{ item }}
         </span>
         <button @click.stop="deleteItem(item)">Delete</button>
-        <button @click="editItem({ item })">Edit</button>
+        <button @click="editItem(items)">Edit</button>
         <button @click="openModall(item, true)">Add Products</button>
       </li>
     </ul>
 
     <modal :open="openModal" @close="openModall(null, false)">
+      <ChosenProducts :category="category" :remove="true" />
       <Product :add="true" :category="category" />
     </modal>
   </div>
@@ -23,6 +25,8 @@
 <script>
 import Modal from "../lib/Modal.vue";
 import Product from "../Product.vue";
+import ChosenProducts from "../ChosenProducts.vue";
+
 export default {
   name: "TodoList",
   data() {
@@ -65,6 +69,7 @@ export default {
   components: {
     Modal,
     Product,
+    ChosenProducts,
   },
 };
 </script>

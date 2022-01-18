@@ -1,5 +1,3 @@
-import Cookies from "js-cookie";
-
 export function getServerHost() {
   if (process.env.VUE_APP_BACK_HOST) {
     return process.env.VUE_APP_BACK_HOST;
@@ -12,7 +10,6 @@ function axiosConfig(
   method,
   url,
   data = null,
-  //   store = null,
   callback = null,
   callback_error = null
 ) {
@@ -23,9 +20,7 @@ function axiosConfig(
   let config = {
     method: method,
     url: url,
-    headers: {
-      "X-CSRFToken": Cookies.get("csrftoken"),
-    },
+    headers: {},
   };
   if (method == "get") {
     config["params"] = data;
@@ -115,24 +110,16 @@ export function create_data($this, params) {
   );
 }
 
-// export function create_user($this, params) {
-//   create_model_data(
-//     params.model,
-//     params.field,
-//     params.value,
-//     params.extraparams,
-//     (data) => {
-//       console.log(data);
-//       // If any callback, execute it
-//       if (params.callback !== undefined) {
-//         if (Array.isArray(params.callback) === true) {
-//           for (let idx in params.callback) {
-//             params.callback[idx](data);
-//           }
-//         } else {
-//           params.callback(data);
-//         }
-//       }
-//     }
+// export function getLoggedInUser($this, params) {}
+
+// export function getAllSuppliers(callback = null) {
+//   axiosConfig("get", "/api/user/missions/all", null, callback);
+// }
+
+// export function deleteMissionData(model, extra_params) {
+//   axiosConfig(
+//     "post",
+//     "/api/data/delete",
+//     formData(model, null, null, JSON.stringify(extra_params))
 //   );
 // }

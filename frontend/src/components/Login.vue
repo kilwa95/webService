@@ -42,7 +42,6 @@
 
 
 <script>
-import Cookies from "js-cookie";
 import { getServerHost } from "../utils/api";
 
 export default {
@@ -60,11 +59,9 @@ export default {
       data.append("email", this.email);
       data.append("password", this.password);
       var config = {
-        method: "post",
+        method: "POST",
         url: getServerHost() + "/login",
-        headers: {
-          "X-CSRFToken": Cookies.get("csrftoken"),
-        },
+        headers: {},
         data: {
           email: data.get("email"),
           password: data.get("password"),

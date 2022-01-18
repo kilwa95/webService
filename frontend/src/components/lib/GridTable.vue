@@ -1,7 +1,6 @@
 
 <template>
   <div class="p-3">
-    {{ chosenProducts }}
     <div class="overflow-x-auto">
       <table class="table-auto w-full">
         <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
@@ -19,7 +18,7 @@
           </tr>
         </thead>
         <tbody class="text-sm divide-y divide-gray-100">
-          <tr v-for="product in filteredProductsOrders" :key="product.name">
+          <tr v-for="product in filteredProductsOrders" :key="product">
             <td class="p-2 whitespace-nowrap" v-for="key in columns" :key="key">
               <div class="flex items-center">
                 <!-- <div class="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
@@ -45,9 +44,18 @@
             <!-- <td class="p-2 whitespace-nowrap">
               <div class="text-lg text-center">🇺 {{ product[key] }}</div>
             </td> -->
+
             <td class="p-2 whitespace-nowrap" v-if="add == true">
-              <div class="text-left font-medium text-green-500">
+              <div
+                class="text-left font-medium text-green-500"
+                v-if="!product['isChosen']"
+              >
                 <button @click="AddToCategory(product)">Add</button>
+              </div>
+            </td>
+            <td class="p-2 whitespace-nowrap" v-if="remove == true">
+              <div class="text-left font-medium text-green-500">
+                <button @click="RemoveFromCategory(product)">Remove</button>
               </div>
             </td>
           </tr>
@@ -59,8 +67,10 @@
 
 
 <script>
+import bus from "../../bus.js";
 export default {
   props: {
+    remove: Boolean,
     add: Boolean,
     products: Array,
     columns: Array,
@@ -68,15 +78,23 @@ export default {
   },
   data: function () {
     var sortOrders = {};
+    var showHide = {};
 
     this.columns.forEach(function (key) {
       sortOrders[key] = 1;
     });
+    // this.products.forEach(function (key) {
+    //   showHide[key] = key;
+    //   console.log(showHide[key]);
+    // });
     return {
       sortKey: "",
       sortOrders: sortOrders,
-      chosenProducts: [],
+      showHide: showHide,
     };
+  },
+  mounted() {
+    this.sortBy(0);
   },
   computed: {
     filteredProductsOrders: function () {
@@ -84,6 +102,8 @@ export default {
       var filterKey = this.filterKey && this.filterKey.toLowerCase();
       var order = this.sortOrders[sortKey] || 1;
       var products = this.products;
+
+      // products.map((d) => this.showHide.push((d.isChosen = false)));
       if (filterKey) {
         products = products.filter(function (row) {
           return Object.keys(row).some(function (key) {
@@ -98,6 +118,7 @@ export default {
           return (a === b ? 0 : a > b ? 1 : -1) * order;
         });
       }
+
       return products;
     },
   },
@@ -107,14 +128,40 @@ export default {
     },
   },
   methods: {
+    editItem: function (item) {
+      this._originalPerson = Object.assign({}, item);
+      item.edit = true;
+    },
+
+    cancelItem: function (item) {
+      Object.assign(item, this._originalPerson);
+      item.edit = false;
+    },
+
     sortBy: function (key) {
       this.sortKey = key;
       this.sortOrders[key] = this.sortOrders[key] * -1;
     },
     AddToCategory(item) {
-      this.chosenProducts.push({
+      // this.showHide[item.id].isChosen = true;
+
+      // console.log(this.showHide[item.id]);
+      bus.$emit("chosenProducts", {
         id: item.id,
         name: item.name,
+        quantity: item.quantity,
+        category: item.category,
+        price: item.price,
+      });
+    },
+
+    RemoveFromCategory(item) {
+      bus.$emit("removeProducts", {
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        category: item.category,
+        price: item.price,
       });
     },
   },

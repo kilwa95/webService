@@ -30,6 +30,11 @@
           </ul>
           <ul class="nav navbar-nav flex-row float-left">
             <li class="nav-item">
+              <router-link class="nav-link pr-3" to="/requests"
+                >Requests</router-link
+              >
+            </li>
+            <li class="nav-item">
               <router-link class="nav-link pr-3" to="/dashboard"
                 >Dashboard</router-link
               >
