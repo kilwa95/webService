@@ -9,7 +9,9 @@ var axios = require("axios");
 function requireAuth() {
   var confi = {
     method: "GET",
-    url: getServerHost() + "/api/users?id=1",
+    url:
+      getServerHost() +
+      "/api/users?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NDI1ODI5MDMsImV4cCI6MTY0MjU4NjUwMywicm9sZXMiOlsiU3VwcGxpZXIsU3VwcGxpZXIsU3VwcGxpZXIiLCJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJlZGR5c3Nhc2FzYWFsaWJ5QGdtYWlsLmNvbWEifQ.YjSjWNatuBuk21GQJ3w_R3bK-XhSQBRYfT3lw7deEco4URBjV_sYjzaO6SQT3eDOYX8Hjh0AAMRL4EPaz9MAa0cXBm9znmESIC7aAbJ4Z4yfJajCPukXstxtR6_1vbbKSHZ_GWkulWLZMdtzcmBXYrdBu-v4VQTj7riKu4aYj12HFBbtMCOIjKUVvRNDYQidLvVDM1iMuvWl1MGXalbRZI5GRV3Lozuyey1wLi20-3V2VwtuuduoxEHkVqjN7JAepp3HTAef3VryqCUU4TrksrN5TuWd3x_TYAX7dju1r7nEr2KVbpn3XfcHR6pKlU5nLsiHNruMDaCTNBAMZZPdlQ",
     headers: {
       "Content-Type": "application/json",
     },

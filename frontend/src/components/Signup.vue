@@ -54,6 +54,28 @@
               class="form-control form-control-lg"
             />
           </div>
+          <br />
+          <div
+            class="form-group"
+            style="display: flex; justify-content: space-around"
+          >
+            <div class="form-group">
+              <label for="supplier">Supplier</label>
+              <input
+                type="radio"
+                id="supplier"
+                value="Supplier"
+                v-model="xyz"
+              />
+            </div>
+            <span>-OR-</span>
+            <div class="form-group">
+              <label for="client">Client</label>
+              <input type="radio" id="client" value="Client" v-model="xyz" />
+            </div>
+          </div>
+
+          <br />
           <input
             type="submit"
             value="Sign Up"
@@ -74,6 +96,8 @@
 import { getServerHost } from "../utils/api";
 export default {
   data: () => ({
+    xyz: "",
+    role: [],
     lastName: "",
     firstName: "",
     email: "",
@@ -85,14 +109,18 @@ export default {
       var axios = require("axios");
       var FormData = require("form-data");
       const data = new FormData(event.target);
+      this.role.push(this.xyz);
+
       data.append("lastName", this.lastName);
       data.append("firstName", this.firstName);
       data.append("email", this.email);
       data.append("phone", this.phone);
       data.append("password", this.password);
+      data.append("roles", this.role);
+
       var config = {
         method: "POST",
-        url: getServerHost() + "/api/customers",
+        url: getServerHost() + "/api/users",
         headers: {},
         data: {
           lastName: data.get("lastName"),
@@ -100,6 +128,7 @@ export default {
           email: data.get("email"),
           phone: parseInt(data.get("phone")),
           password: data.get("password"),
+          roles: [data.get("roles")],
         },
       };
       axios(config)
@@ -109,7 +138,6 @@ export default {
           }
         })
         .catch((e) => {
-          console.log(data);
           console.log(e);
         });
     },

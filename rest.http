@@ -2,8 +2,8 @@ POST https://localhost:8443/login
 Content-Type: application/json
 
 {
-  "email": "provider@gmail.com",
-  "password": "provider"
+  "email": "e@gmail.com",
+  "password": "123"
 }
 # Bearer
 ###
