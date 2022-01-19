@@ -8,6 +8,10 @@ App\Entity\User:
       groups: ['read:user:collection']
   collectionOperations:
     get: 
+    current_user:
+      path: /users/current
+      method: GET
+      controller: App\Controller\UserConnectedController
     post:
   itemOperations:
     get: 
