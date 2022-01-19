@@ -174,6 +174,7 @@ class User implements UserInterface,JWTUserInterface
     public static function createFromPayload($username, array $payload)
     {
         $user = new self();
+        dd($payload);
         $user->setUsername($username);
         $user->setRoles($payload['roles']);
         return $user;

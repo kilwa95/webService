@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 class UserConnectedController
 {
@@ -15,7 +17,9 @@ class UserConnectedController
 
     public function __invoke()
     {
-        // $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
+        $data = ['email' => $user->getEmail(),'roles' => $user->getRoles()];
+        return new JsonResponse($data);
     }
 
 }
