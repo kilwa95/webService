@@ -38,4 +38,5 @@ security:
     access_control:
         - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY } # Allows accessing the Swagger UI
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/api/catalog, roles: ROLE_PROVIDER }
         # - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

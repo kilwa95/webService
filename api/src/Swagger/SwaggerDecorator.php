@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class SwaggerDecorator implements NormalizerInterface
 {
-    private $decorated;
+    private  $decorated;
 
     public function __construct(NormalizerInterface $decorated)
     {
@@ -38,7 +38,7 @@ final class SwaggerDecorator implements NormalizerInterface
         $docs['components']['schemas']['Credentials'] = [
             'type' => 'object',
             'properties' => [
-                'email' => [
+                'username' => [
                     'type' => 'string',
                     'example' => 'api',
                 ],
@@ -51,7 +51,7 @@ final class SwaggerDecorator implements NormalizerInterface
 
         $tokenDocumentation = [
             'paths' => [
-                '/login' => [
+                '/authentication_token' => [
                     'post' => [
                         'tags' => ['Token'],
                         'operationId' => 'postCredentialsItem',

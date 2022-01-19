@@ -9,20 +9,6 @@ App\Entity\User:
   collectionOperations:
     get: 
     post:
-    customers:
-      path: /customers
-      method: POST
-      controller: App\Controller\CustomerCreateController
-      openapi_context:
-        summary: Create a new customer
-    admins:
-      path: /amdins
-      method: POST
-      controller: App\Controller\AdminCreateController
-    providers:
-      path: /providers
-      method: POST
-      controller: App\Controller\ProviderCreateController
   itemOperations:
     get: 
     delete:

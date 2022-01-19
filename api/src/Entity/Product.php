@@ -56,13 +56,6 @@ class Product
     private $enable;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"write:product:collection"})
-     */
-    private $admin;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Request::class, mappedBy="products")
      */
     private $requests;
@@ -71,6 +64,18 @@ class Product
      * @ORM\ManyToMany(targetEntity=Catalog::class, mappedBy="products")
      */
     private $catalogs;
+
+    /**
+     * @Groups({"read:catalog:collection"})
+     * @ORM\Column(type="float")
+     */
+    private $price;
+
+    /**
+     * @Groups({"read:catalog:collection"})
+     * @ORM\Column(type="integer")
+     */
+    private $quantity;
 
     public function __construct()
     {
@@ -145,18 +150,6 @@ class Product
         return $this;
     }
 
-    public function getAdmin(): ?User
-    {
-        return $this->admin;
-    }
-
-    public function setAdmin(?User $admin): self
-    {
-        $this->admin = $admin;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Request[]
      */
@@ -209,6 +202,30 @@ class Product
             $this->catalogs->removeElement($catalog);
             $catalog->removeProduct($this);
         }
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): self
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

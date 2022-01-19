@@ -6,7 +6,14 @@ Content-Type: application/json
   "password": "provider"
 }
 # Bearer
-
+###
+POST https://localhost:8443/catalog/1/product
+Content-Type: application/json
+{
+  "email": "provider@gmail.com",
+  "password": "provider"
+}
+# Bearer
 ###
 POST http://localhost:4001/carts
 Content-Type: application/json
