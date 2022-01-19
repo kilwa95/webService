@@ -69,16 +69,12 @@ export default {
       };
       axios(config)
         .then((response) => {
-          if (response["data"]["status"] == true) {
-            console.log(response);
-            // store.commit("getLoggedUser", response.data);
-          } else {
-            console.log(response);
-            // store.commit("getLoggedUser", response.data);
+          if (response["data"]["token"]) {
+            this.$router.push("dashboard");
           }
         })
-        .catch((e) => {
-          console.log(e);
+        .catch(() => {
+          alert("invalid passowrd or email");
         });
     },
     handleChange: function (event) {
