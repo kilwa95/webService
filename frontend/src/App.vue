@@ -16,36 +16,36 @@
         "
       >
         <div class="container">
-          <ul class="nav navbar-nav flex-row float-right">
+          <ul class=" d-flex nav navbar-nav flex-row float-right">
             <li class="nav-item">
-              <router-link class="nav-link pr-3" to="/login"
+              <router-link class="nav-link pr-3 mr-14" to="/login"
                 >Sign in</router-link
               >
             </li>
             <li class="nav-item">
-              <router-link class="btn btn-outline-primary" to="/"
+              <router-link class="btn btn-outline-primary " to="/"
                 >Sign up</router-link
               >
             </li>
           </ul>
           <ul class="nav navbar-nav flex-row float-left">
             <li class="nav-item">
-              <router-link class="nav-link pr-3" to="/requests"
+              <router-link class="nav-link pr-3 mr-14" to="/requests"
                 >Requests</router-link
               >
             </li>
             <li class="nav-item">
-              <router-link class="nav-link pr-3" to="/dashboard"
+              <router-link class="nav-link pr-3 mr-14" to="/dashboard"
                 >Dashboard</router-link
               >
             </li>
             <li class="nav-item">
-              <router-link class="btn btn-outline-primary" to="/catalogues"
+              <router-link class="btn btn-outline-primary mr-14" to="/catalogues"
                 >My Catalogues</router-link
               >
             </li>
             <li class="nav-item">
-              <router-link class="btn btn-outline-primary" to="/products"
+              <router-link class="btn btn-outline-primary mr-14" to="/products"
                 >My Products</router-link
               >
             </li>
@@ -77,3 +77,9 @@ export default {
   components: {},
 };
 </script>
+
+<style scoped>
+.mr-14{
+margin-right: 14px;
+}
+</style>

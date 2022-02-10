@@ -29,7 +29,7 @@
           <input
             value="Sign in"
             type="submit"
-            class="btn btn-dark btn-lg btn-block"
+            class="btn btn-dark btn-lg btn-block mt-16"
           />
           <p class="forgot-password text-right mt-2 mb-4">
             <router-link to="/forgot-password">Forgot password ?</router-link>
@@ -101,3 +101,8 @@ export default {
   components: {},
 };
 </script>
+<style scoped>
+.mt-16{
+margin-top: 16px;
+}
+</style>
