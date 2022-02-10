@@ -19,7 +19,6 @@ class UserConnectedController
         $this->tokenStorage = $tokenStorage;
         $this->em = $em;
     }
-
     public function __invoke()
     {
         $user = $this->tokenStorage->getToken()->getUser();

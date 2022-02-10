@@ -2,7 +2,11 @@
   <div class="main">
     <div class="inner-block full-width">
       <h1>Create Category</h1>
-      <TPTodoList />
+      <section class="container py-3 py-lg-5">
+        <div class="table-col-3">
+          <TPTodoList />
+        </div>
+      </section>
     </div>
   </div>
 </template>

@@ -7,7 +7,6 @@
       <li v-for="item in items" :key="item.id">
         <span>
           {{ item.name }}
-          {{ item }}
         </span>
         <button @click.stop="deleteItem(item)">Delete</button>
         <button @click="editItem(items)">Edit</button>

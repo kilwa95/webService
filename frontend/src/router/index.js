@@ -6,22 +6,37 @@ Vue.use(VueRouter);
 import store from "@/store/index";
 var axios = require("axios");
 
-function requireAuth() {
+function isAllowed(to, from, next) {
+  try {
+    if (store.state.logged_user["user"]["roles"][0] == "Supplier") {
+      requireAuth(to, from, next);
+    }
+  } catch (err) {
+    err;
+  }
+  next("dashboard");
+}
+
+function requireAuth(from, to, next) {
   var confi = {
     method: "GET",
-    url:
-      getServerHost() +
-      "/api/users?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NDI1ODI5MDMsImV4cCI6MTY0MjU4NjUwMywicm9sZXMiOlsiU3VwcGxpZXIsU3VwcGxpZXIsU3VwcGxpZXIiLCJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJlZGR5c3Nhc2FzYWFsaWJ5QGdtYWlsLmNvbWEifQ.YjSjWNatuBuk21GQJ3w_R3bK-XhSQBRYfT3lw7deEco4URBjV_sYjzaO6SQT3eDOYX8Hjh0AAMRL4EPaz9MAa0cXBm9znmESIC7aAbJ4Z4yfJajCPukXstxtR6_1vbbKSHZ_GWkulWLZMdtzcmBXYrdBu-v4VQTj7riKu4aYj12HFBbtMCOIjKUVvRNDYQidLvVDM1iMuvWl1MGXalbRZI5GRV3Lozuyey1wLi20-3V2VwtuuduoxEHkVqjN7JAepp3HTAef3VryqCUU4TrksrN5TuWd3x_TYAX7dju1r7nEr2KVbpn3XfcHR6pKlU5nLsiHNruMDaCTNBAMZZPdlQ",
+    url: getServerHost() + "/api/users/current",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer ",
+      Authorization: "Bearer " + store.state["logged_user"]["token"],
     },
   };
   axios(confi)
     .then((response) => {
-      console.log("auth", response["data"]["hydra:member"]);
+      store.commit("getLoggedUser", {
+        user: response["data"],
+        token: store.state["logged_user"]["token"],
+      });
+      console.log("sa");
+      next();
     })
     .catch((e) => {
+      next("login");
       console.log(e);
     });
 }
@@ -38,22 +53,24 @@ const routes = [
     component: () => import("../components/Login.vue"),
   },
   {
-    path: "/requests",
-    name: "requests",
-    component: () => import("../components/Requests.vue"),
-  },
-  {
     path: "/forgot-password",
     name: "forgot-password",
     component: () => import("../components/ForgotPassword.vue"),
   },
   {
+    path: "/requests",
+    name: "requests",
+    component: () => import("../components/Requests.vue"),
+    beforeEnter: (to, from, next) => {
+      requireAuth(to, from, next);
+    },
+  },
+
+  {
     path: "/dashboard",
     name: "dashboard",
     component: () => import("../components/Dashboard.vue"),
     beforeEnter: (to, from, next) => {
-      console.log("sa", store.state.logged_user);
-
       requireAuth(to, from, next);
     },
   },
@@ -61,16 +78,25 @@ const routes = [
     path: "/products",
     name: "products",
     component: () => import("../components/Product.vue"),
+    beforeEnter: (to, from, next) => {
+      requireAuth(to, from, next);
+    },
   },
   {
     path: "/catalogues",
     name: "catalogues",
     component: () => import("../components/Catalogue.vue"),
+    beforeEnter: (to, from, next) => {
+      requireAuth(to, from, next);
+    },
   },
   {
     path: "/create",
     name: "create",
     component: () => import("../components/Create.vue"),
+    beforeEnter: (to, from, next) => {
+      isAllowed(to, from, next);
+    },
   },
 ];
 

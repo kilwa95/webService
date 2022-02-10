@@ -43,8 +43,6 @@
 
 <script>
 import { getServerHost } from "../utils/api";
-import store from "@/store/index";
-
 export default {
   data() {
     return {
@@ -52,16 +50,8 @@ export default {
       password: "",
     };
   },
-  computed: {
-    getLoggedUser: {
-      get() {
-        return this.$store.state.logged_user;
-      },
-      set(value) {
-        this.$store.commit("getLoggedUser", value);
-      },
-    },
-  },
+  mounted() {},
+  computed: {},
   methods: {
     login() {
       var axios = require("axios");
@@ -81,14 +71,14 @@ export default {
       axios(config)
         .then((response) => {
           if (response["data"]["token"]) {
-            store.commit("getLoggedUser", response["data"]["token"]);
+            this.$store.commit("getLoggedUser", {
+              token: response["data"]["token"],
+            });
             this.$router.push("dashboard");
           }
         })
         .catch(() => {
-          store.commit("getLoggedUser", "sa");
-          console.log("sa", store.state.logged_user);
-
+          this.$store.commit("getLoggedUser", {});
           alert("invalid passowrd or email");
         });
     },

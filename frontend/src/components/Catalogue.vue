@@ -2,11 +2,15 @@
   <div class="main">
     <div class="inner-block full-width">
       <div>
-        <TableCollapse
-          title="My Catalogues"
-          :products="gridData"
-          :columns="gridColumns"
-        />
+        <section class="container py-3 py-lg-5">
+          <div class="table-col-3">
+            <TableCollapse
+              title="My Catalogues"
+              :products="gridData"
+              :columns="gridColumns"
+            />
+          </div>
+        </section>
       </div>
     </div>
   </div>
