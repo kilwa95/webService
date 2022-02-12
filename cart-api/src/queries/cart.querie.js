@@ -18,3 +18,10 @@ exports.findCartById= async (id) => {
         console.error(error);
     }
 }
+exports.findAllCarts = async () => {
+    try {
+        return Cart.find({});
+    } catch (error) {
+        console.error(error);
+    }
+}

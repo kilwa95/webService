@@ -1,5 +1,5 @@
 const axios = require("axios");
-const {saveCart,findCartById} = require('../queries/cart.querie');
+const {saveCart,findCartById, findAllCarts} = require('../queries/cart.querie');
 
  exports.createCart = async (req, res, next) => {
         const { customer, products } = req.body;
@@ -32,6 +32,18 @@ exports.getCartByCustomerId = async (req, res, next) => {
         next(error);
     }
 }
+exports.getListOfCarts = async (req, res, next) => {
+   try {
+       const carts = await findAllCarts();
+       res.status(200).json({
+           message: 'List of carts retrieved successfully',
+           carts
+       });
+   }catch (error) {
+    console.log(error.message);
+      res.status(500).json('internal server error');
+ }
+}
 
 exports.createCartEvent = async (req, res, next) => {
     const { customer, products } = req.body;
@@ -60,3 +72,4 @@ exports.handleEvent = async (req, res, next) => {
         next(error);
     }
 }
+
