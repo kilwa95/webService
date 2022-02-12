@@ -61,18 +61,21 @@
               </li>
             </div>
             <div class="nav-item" v-else style="display: flex">
+              <br />
               <li class="nav-item">
                 <router-link class="nav-link pr-3" to="/requests"
-                  >Requests</router-link
+                  >My Requests</router-link
                 >
               </li>
+              <br />
               <li class="nav-item">
                 <router-link class="nav-link pr-3" to="/dashboard"
                   >Dashboard</router-link
                 >
               </li>
+              <br />
               <li class="nav-item">
-                <router-link class="nav-link pr-3" to="/dashboard"
+                <router-link class="nav-link pr-3" to="/new-request"
                   >Create New Request</router-link
                 >
               </li>
@@ -107,6 +110,16 @@ export default {
     isSupplier() {
       try {
         if (this.$store.state.logged_user["user"]["roles"] == "Supplier") {
+          return true;
+        }
+      } catch (err) {
+        err;
+      }
+      return false;
+    },
+    isClient() {
+      try {
+        if (this.$store.state.logged_user["user"]["roles"] == "Customer") {
           return true;
         }
       } catch (err) {

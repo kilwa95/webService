@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div class="main-dashboard-container">
+    <div class="main-dashboard-container" v-if="isSupplier">
       <div class="inner-block center">
         <div>
           <TableCollapse
@@ -25,6 +25,27 @@
         <div>
           <TableCollapse
             title="Completed orders :10"
+            :products="gridData"
+            :columns="gridColumns"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="main-dashboard-container" v-else>
+      <div class="inner-block center">
+        <div>
+          <TableCollapse
+            title="Total orders :10"
+            :products="gridData"
+            :columns="gridColumns"
+          />
+        </div>
+      </div>
+      <br />
+      <div class="inner-block center">
+        <div>
+          <TableCollapse
+            title="Ongoing orders :10"
             :products="gridData"
             :columns="gridColumns"
           />

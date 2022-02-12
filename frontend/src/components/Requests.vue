@@ -18,6 +18,7 @@
   </div>
 </template>
 <script>
+import { getServerHost } from "../utils/api";
 import TableCollapse from "./lib/TableCollapse.vue";
 
 export default {
@@ -37,11 +38,27 @@ export default {
       ],
     };
   },
+  mounted() {
+    //Getting all the requests
+    var axios = require("axios");
+    var config = {
+      method: "GET",
+      url: getServerHost() + "/api/requests",
+    };
+    axios(config)
+      .then((response) => {
+        if (response["status"] == 200) {
+          console.log(response);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  },
   methods: {
     handleChange: function (event) {
       this[event.target.name] = event.target.value;
     },
-
     avoidEnter: () => console.log("Enter avoided"),
   },
 

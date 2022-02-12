@@ -25,6 +25,9 @@
   .main{
     margin-top: 10vh;
   }
+  .navbar-nav .nav-link {
+    padding: 0.5rem 1rem !important;
+}
   .vertical-center {
     display: flex;
     text-align: left;

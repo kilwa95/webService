@@ -32,7 +32,6 @@ function requireAuth(from, to, next) {
         user: response["data"],
         token: store.state["logged_user"]["token"],
       });
-      console.log("sa");
       next();
     })
     .catch((e) => {
@@ -40,7 +39,6 @@ function requireAuth(from, to, next) {
       console.log(e);
     });
 }
-
 const routes = [
   {
     path: "/",
@@ -65,7 +63,6 @@ const routes = [
       requireAuth(to, from, next);
     },
   },
-
   {
     path: "/dashboard",
     name: "dashboard",
@@ -97,6 +94,14 @@ const routes = [
     beforeEnter: (to, from, next) => {
       isAllowed(to, from, next);
     },
+  },
+  {
+    path: "/new-request",
+    name: "new-request",
+    component: () => import("../components/NewRequest.vue"),
+    // beforeEnter: (to, from, next) => {
+    //   isAllowed(to, from, next);
+    // },
   },
 ];
 

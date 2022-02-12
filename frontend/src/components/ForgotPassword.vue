@@ -4,7 +4,6 @@
       <div class="vue-tempalte">
         <form>
           <h3>Forgot Password</h3>
-
           <div class="form-group">
             <label>Email address</label>
             <input type="email" class="form-control form-control-lg" />
