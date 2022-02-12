@@ -66,13 +66,13 @@ class Product
     private $catalogs;
 
     /**
-     * @Groups({"read:catalog:collection"})
+     * @Groups({"read:catalog:collection","write:product:collection","read:request:collection"})
      * @ORM\Column(type="float")
      */
     private $price;
 
     /**
-     * @Groups({"read:catalog:collection"})
+     * @Groups({"read:catalog:collection","write:product:collection","read:request:collection"})
      * @ORM\Column(type="integer")
      */
     private $quantity;
