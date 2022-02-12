@@ -109,7 +109,7 @@ export default {
     },
     isSupplier() {
       try {
-        if (this.$store.state.logged_user["user"]["roles"] == "Supplier") {
+        if (this.$store.state.logged_user["user"]["roles"] == "ROLE_PROVIDER") {
           return true;
         }
       } catch (err) {
@@ -119,7 +119,7 @@ export default {
     },
     isClient() {
       try {
-        if (this.$store.state.logged_user["user"]["roles"] == "Customer") {
+        if (this.$store.state.logged_user["user"]["roles"] == "ROLE_CUSTOMER") {
           return true;
         }
       } catch (err) {

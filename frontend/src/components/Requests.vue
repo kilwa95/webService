@@ -7,6 +7,7 @@
             <TableCollapse
               :products="gridData"
               :columns="gridColumns"
+              :fulldata="data"
               :category="{ name: 'Requests' }"
               :add="add"
               :remove="remove"
@@ -25,17 +26,10 @@ export default {
   props: {},
   data() {
     return {
+      data: {},
       searchQuery: "",
-      gridColumns: ["name", "lastname", "date", "price"],
-      gridData: [
-        {
-          id: 1,
-          name: "eddy",
-          lastname: "Salibi",
-          date: "19/1/2021",
-          price: 0.4,
-        },
-      ],
+      gridColumns: [],
+      gridData: [],
     };
   },
   mounted() {
@@ -48,7 +42,58 @@ export default {
     axios(config)
       .then((response) => {
         if (response["status"] == 200) {
-          console.log(response);
+          for (
+            let index = 0;
+            index < response["data"]["hydra:member"].length;
+            index++
+          ) {
+            Object.entries(response["data"]["hydra:member"][index]).forEach(
+              ([key, value]) => {
+                if (key == "customer") {
+                  this.data["customer"] = value;
+                  for (
+                    let index = 0;
+                    index < this.data["customer"].length;
+                    index++
+                  ) {
+                    if (
+                      index !== "@id" &&
+                      index !== "@type" &&
+                      index !== "id"
+                    ) {
+                      this.data[key] = value[index];
+                    }
+                  }
+                }
+
+                if (key == "products") {
+                  for (let index = 0; index < value.length; index++) {
+                    if (
+                      index !== "@id" &&
+                      index !== "@type" &&
+                      index !== "id"
+                    ) {
+                      this.data[key] = value[index];
+                    }
+                  }
+                }
+              }
+            );
+
+            Object.entries(this.data["customer"]).forEach(([k, v]) => {
+              console.log("ds");
+              if (k !== "@id" && k !== "@type" && k !== "id") {
+                this.gridColumns.push(k);
+                this.gridData.push(v);
+              }
+            });
+            Object.entries(this.data["products"]).forEach(([k, v]) => {
+              if (k !== "@id" && k !== "@type" && k !== "id") {
+                this.gridColumns.push(k);
+                this.gridData.push(v);
+              }
+            });
+          }
         }
       })
       .catch((e) => {

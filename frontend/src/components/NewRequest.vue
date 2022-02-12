@@ -5,14 +5,30 @@
         <form @submit.prevent="newRequest">
           <h3>Create New Request</h3>
           <div class="form-group">
-            <label>Product</label>
-            <input
-              name="Product"
-              type="text"
-              :value="product"
+            <div class="form-group">
+              <label>Request Name</label>
+              <input
+                name="name"
+                type="text"
+                :value="requestName"
+                @input="handleChange"
+                class="form-control form-control-lg"
+              />
+            </div>
+            <label>Products</label>
+            <select v-model="selectedProduct">
+              <option v-for="product in allProducts" :key="product.id">
+                <span value="product.id">
+                  {{ product.name }}
+                </span>
+              </option>
+            </select>
+            <!-- <select
+              name="Products"
+              type="select"
               @input="handleChange"
               class="form-control form-control-lg"
-            />
+            /> -->
           </div>
           <div class="form-group">
             <label>Quantity</label>
@@ -60,27 +76,59 @@
 import { getServerHost } from "../utils/api";
 export default {
   data: () => ({
+    requestName: "",
+    allProducts: [],
+    selectedProduct: "",
     quantity: "",
-    product: "",
+    products: [],
     comment: "",
   }),
+  mounted() {
+    //Getting all the Products
+    var axios = require("axios");
+    var config = {
+      method: "GET",
+      url: getServerHost() + "/api/products",
+    };
+    axios(config)
+      .then((response) => {
+        console.log(response);
+        if (response["status"] == 200) {
+          for (
+            let index = 0;
+            index < response["data"]["hydra:member"].length;
+            index++
+          ) {
+            this.allProducts.push(response["data"]["hydra:member"][index]);
+          }
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  },
   methods: {
     newRequest(event) {
       var axios = require("axios");
       var FormData = require("form-data");
       const data = new FormData(event.target);
-      data.append("product", this.product);
+      this.products.push("/api/products/2");
+      data.append("name", this.requestName);
+      data.append("products", this.products);
       data.append("quantity", this.quantity);
       data.append("comment", this.comment);
       var config = {
         method: "POST",
         url: getServerHost() + "/api/requests",
-        headers: {},
+        headers: {
+          Authorization: "Bearer " + this.$store.state["logged_user"]["token"],
+        },
         data: {
-          product: data.get("product"),
+          name: data.get("name"),
+          products: this.products,
           quantity: data.get("quantity"),
           comment: data.get("comment"),
-          customer: this.$store.state.logged_user["user"]["id"],
+          customer: "/api/users/" + this.$store.state.logged_user["user"]["id"],
         },
       };
       axios(config)

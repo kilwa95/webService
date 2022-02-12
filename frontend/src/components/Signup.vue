@@ -64,14 +64,19 @@
               <input
                 type="radio"
                 id="supplier"
-                value="Supplier"
+                value="ROLE_PROVIDER"
                 v-model="xyz"
               />
             </div>
             <span>-OR-</span>
             <div class="form-group">
               <label for="client">Client</label>
-              <input type="radio" id="client" value="Client" v-model="xyz" />
+              <input
+                type="radio"
+                id="client"
+                value="ROLE_CUSTOMER"
+                v-model="xyz"
+              />
             </div>
           </div>
 

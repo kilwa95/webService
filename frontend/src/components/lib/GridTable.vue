@@ -74,6 +74,8 @@ export default {
     add: Boolean,
     products: Array,
     columns: Array,
+    fulldata: Object,
+
     filterKey: String,
   },
   data: function () {
@@ -101,7 +103,7 @@ export default {
       var sortKey = this.sortKey;
       var filterKey = this.filterKey && this.filterKey.toLowerCase();
       var order = this.sortOrders[sortKey] || 1;
-      var products = this.products;
+      var products = this.fulldata;
 
       // products.map((d) => this.showHide.push((d.isChosen = false)));
       if (filterKey) {

@@ -8,7 +8,7 @@ var axios = require("axios");
 
 function isAllowed(to, from, next) {
   try {
-    if (store.state.logged_user["user"]["roles"][0] == "Supplier") {
+    if (store.state.logged_user["user"]["roles"][0] == "ROLE_PROVIDER") {
       requireAuth(to, from, next);
     }
   } catch (err) {
@@ -100,7 +100,7 @@ const routes = [
     name: "new-request",
     component: () => import("../components/NewRequest.vue"),
     // beforeEnter: (to, from, next) => {
-    //   isAllowed(to, from, next);
+    //   // isAllowed(to, from, next);
     // },
   },
 ];
