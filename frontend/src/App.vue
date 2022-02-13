@@ -41,6 +41,11 @@
                 >
               </li>
               <li class="nav-item">
+                <router-link class="nav-link pr-3" to="/myrequests"
+                  >My Requests</router-link
+                >
+              </li>
+              <li class="nav-item">
                 <router-link class="nav-link pr-3" to="/dashboard"
                   >Dashboard</router-link
                 >

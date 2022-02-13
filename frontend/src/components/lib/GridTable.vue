@@ -21,30 +21,31 @@
           </tr>
         </thead>
         <tbody class="text-sm divide-y divide-gray-100">
-          <tr v-for="product in filteredProductsOrders" :key="product.id">
+          <tr v-for="data in this.filteredData" :key="data.id">
             <td class="p-2 whitespace-nowrap">
               <div class="text-left">
-                {{ product["firstName"] }}
+                {{ data["customer"]["firstName"] }}
               </div>
             </td>
             <td class="p-2 whitespace-nowrap">
               <div class="text-left font-medium text-green-500">
-                {{ product["lastName"] }}
+                {{ data["customer"]["lastName"] }}
               </div>
             </td>
             <td class="p-2 whitespace-nowrap">
               <div class="text-left font-medium text-green-500">
-                {{ product["email"] }}
+                {{ data["customer"]["email"] }}
               </div>
             </td>
             <td class="p-2 whitespace-nowrap">
               <div class="text-left font-medium text-green-500">
-                {{ product["name"] }}
+                {{ data["products"][0]["name"] }}
               </div>
             </td>
+
             <td
               class="p-2 whitespace-nowrap"
-              v-if="product['status'] == 'created'"
+              v-if="data['status'] == 'created'"
             >
               <div class="text-left font-medium text-green-500">Pending</div>
             </td>
@@ -55,9 +56,7 @@
             </td>
             <td class="p-2 whitespace-nowrap" v-if="isSupplier">
               <div class="text-left font-medium text-green-500">
-                <button @click="openRequest('filteredProductsOrders', true)">
-                  View Request
-                </button>
+                <button @click="openRequest(data, true)">View Request</button>
               </div>
             </td>
 
@@ -82,7 +81,7 @@
         @close="openRequest(null, false)"
         v-if="isSupplier"
       >
-        <RequestDetails :fulldata="fulldata" />
+        <RequestDetails :product="data" />
       </modal>
     </div>
     <div class="overflow-x-auto" v-else>No requests yet</div>
@@ -122,7 +121,7 @@ export default {
       sortOrders: sortOrders,
       showHide: showHide,
       openModal: false,
-      category: Object,
+      data: Object,
     };
   },
   components: {
@@ -130,7 +129,9 @@ export default {
     RequestDetails,
   },
   mounted() {
-    console.log(this.fulldata);
+    for (let index = 0; index < this.filteredData.length; index++) {
+      this.openRequest(this.filteredData[index], false);
+    }
   },
   computed: {
     isSupplier() {
@@ -147,7 +148,7 @@ export default {
       var sortKey = this.sortKey;
       var filterKey = this.filterKey && this.filterKey.toLowerCase();
       var order = this.sortOrders[sortKey] || 1;
-      console.log(this.filteredData);
+
       var products = {
         data: this.filteredData,
       };
@@ -157,7 +158,6 @@ export default {
             return String(row[key]).toLowerCase().indexOf(filterKey) > -1;
           });
         });
-        console.log(products);
       }
       if (sortKey) {
         products = products.slice().sort(function (a, b) {
@@ -165,7 +165,6 @@ export default {
           b = b[sortKey];
           return (a === b ? 0 : a > b ? 1 : -1) * order;
         });
-        console.log(products);
       }
       return products;
     },
@@ -212,9 +211,9 @@ export default {
         price: item.price,
       });
     },
-    openRequest(category, bool) {
+    openRequest(data, bool) {
       this.openModal = bool;
-      this.category = category;
+      this.data = data;
     },
   },
 };

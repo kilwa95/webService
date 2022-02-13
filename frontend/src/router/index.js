@@ -64,6 +64,14 @@ const routes = [
     },
   },
   {
+    path: "/myrequests",
+    name: "myrequests",
+    component: () => import("../components/MyRequest.vue"),
+    beforeEnter: (to, from, next) => {
+      requireAuth(to, from, next);
+    },
+  },
+  {
     path: "/dashboard",
     name: "dashboard",
     component: () => import("../components/Dashboard.vue"),

@@ -3,17 +3,7 @@
     <div class="inner-block full-width">
       <div>
         <section class="container py-3 py-lg-5">
-          <div class="table-col-3">
-            <TableCollapse
-              :products="gridData"
-              :columns="gridColumns"
-              :filteredData="filteredData"
-              :fulldata="data"
-              :category="{ name: 'Requests' }"
-              :add="add"
-              :remove="remove"
-            />
-          </div>
+          <div class="table-col-3"></div>
         </section>
       </div>
     </div>
@@ -21,7 +11,6 @@
 </template>
 <script>
 import { getServerHost } from "../utils/api";
-import TableCollapse from "./lib/TableCollapse.vue";
 
 export default {
   props: {},
@@ -29,7 +18,7 @@ export default {
     return {
       add: false,
       remove: false,
-      filteredData: {},
+      filteredData: [],
       data: {},
       searchQuery: "",
       gridColumns: ["firstName", "lastName", "email", "products", "status"],
@@ -42,18 +31,16 @@ export default {
     var axios = require("axios");
     var config = {
       method: "GET",
-      url: getServerHost() + "/api/" + provider_id+"/products",
+      url:
+        getServerHost() +
+        "/requests/" +
+        this.$store.state.logged_user["user"]["id"] +
+        "/provider",
     };
     axios(config)
       .then((response) => {
         if (response["status"] == 200) {
-          for (
-            let index = 0;
-            index < response["data"]["hydra:member"].length;
-            index++
-          ) {
-            this.filteredData["data"] = response["data"]["hydra:member"][index];
-          }
+          console.log(response);
         }
       })
       .catch((e) => {
@@ -67,9 +54,7 @@ export default {
     avoidEnter: () => console.log("Enter avoided"),
   },
 
-  components: {
-    TableCollapse,
-  },
+  components: {},
 };
 </script>
 <style lang="css">
