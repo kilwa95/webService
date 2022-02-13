@@ -1,10 +1,7 @@
 
 <template>
   <div class="p-3">
-    <div
-      class="overflow-x-auto"
-      v-if="Object.entries(filteredProductsOrders['data']).length"
-    >
+    <div class="overflow-x-auto">
       <table class="table-auto w-full">
         <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
           <tr>
@@ -84,7 +81,6 @@
         <RequestDetails :product="data" />
       </modal>
     </div>
-    <div class="overflow-x-auto" v-else>No requests yet</div>
   </div>
 </template>
 
@@ -128,7 +124,9 @@ export default {
     Modal,
     RequestDetails,
   },
+
   mounted() {
+    console.log("myn req", this.products);
     for (let index = 0; index < this.filteredData.length; index++) {
       this.openRequest(this.filteredData[index], false);
     }
@@ -148,10 +146,11 @@ export default {
       var sortKey = this.sortKey;
       var filterKey = this.filterKey && this.filterKey.toLowerCase();
       var order = this.sortOrders[sortKey] || 1;
-
       var products = {
-        data: this.filteredData,
+        data:
+          this.filteredData !== undefined ? this.filteredData : this.products,
       };
+      console.log("products", products);
       if (filterKey) {
         products = products.filter(function (row) {
           return Object.keys(row).some(function (key) {
