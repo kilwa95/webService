@@ -17,13 +17,24 @@ use App\Entity\User;
 final class RequestController extends AbstractController
 {
     /**
-     * @Route("/requests/{id}/provider", name="catalog_product")
+     * @Route("/requests/{id}/provider", name="provider_product")
      */
     public function getListRequestsByProvider(int $id): Response
     {  
         $entityManager = $this->getDoctrine()->getManager();
         $provider = $entityManager->getRepository(User::class)->find($id);
         $requests = $entityManager->getRepository(Request::class)->findBy(['provider' => $provider]);
+        return $this->json($requests);
+    }
+
+    /**
+     * @Route("/requests/{id}/user", name="user_requests")
+     */
+    public function getListRequestsByUser(int $id): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $cutomer = $entityManager->getRepository(User::class)->find($id);
+        $requests = $entityManager->getRepository(Request::class)->findBy(['user' => $cutomer]);
         return $this->json($requests);
     }
 }
