@@ -32,7 +32,7 @@ export default {
       filteredData: {},
       data: {},
       searchQuery: "",
-      gridColumns: ["firstName", "lastName", "email", "products"],
+      gridColumns: ["firstName", "lastName", "email", "products", "status"],
       gridData: [],
       test: [],
     };
@@ -47,12 +47,12 @@ export default {
     axios(config)
       .then((response) => {
         if (response["status"] == 200) {
+          console.log(response);
           for (
             let index = 0;
             index < response["data"]["hydra:member"].length;
             index++
           ) {
-            this.test.push(response["data"]["hydra:member"][index]);
             Object.entries(response["data"]["hydra:member"][index]).forEach(
               ([key, value]) => {
                 if (key == "customer") {
@@ -88,14 +88,27 @@ export default {
             // for (let index = 0; index < this.test.length; index++) {
             //   const element = array[index];
             // }
+            console.log(response["data"]["hydra:member"][index]["products"]);
             this.filteredData = {
-              firstName: this.data["customer"]["firstName"],
-              lastName: this.data["customer"]["lastName"],
-              email: this.data["customer"]["email"],
-              name: this.data["products"]["name"],
-              description: this.data["products"]["description"],
+              firstName:
+                response["data"]["hydra:member"][index]["customer"][
+                  "firstName"
+                ],
+              lastName:
+                response["data"]["hydra:member"][index]["customer"]["lastName"],
+              email:
+                response["data"]["hydra:member"][index]["customer"]["email"],
+              name: response["data"]["hydra:member"][index]["products"][0][
+                "name"
+              ],
+              description:
+                response["data"]["hydra:member"][index]["products"][0][
+                  "description"
+                ],
+              status: response["data"]["hydra:member"][index]["status"],
             };
           }
+          console.log("all request", this.test);
         }
       })
       .catch((e) => {

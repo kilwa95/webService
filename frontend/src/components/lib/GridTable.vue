@@ -42,6 +42,17 @@
                 {{ product["name"] }}
               </div>
             </td>
+            <td
+              class="p-2 whitespace-nowrap"
+              v-if="product['status'] == 'created'"
+            >
+              <div class="text-left font-medium text-green-500">Pending</div>
+            </td>
+            <td class="p-2 whitespace-nowrap" v-else>
+              <div class="text-left font-medium text-green-500">
+                Accepted by:
+              </div>
+            </td>
             <td class="p-2 whitespace-nowrap" v-if="isSupplier">
               <div class="text-left font-medium text-green-500">
                 <button @click="openRequest('filteredProductsOrders', true)">
@@ -119,7 +130,7 @@ export default {
     RequestDetails,
   },
   mounted() {
-    console.log(this.filteredData["data"]);
+    console.log(this.fulldata);
   },
   computed: {
     isSupplier() {
@@ -136,7 +147,7 @@ export default {
       var sortKey = this.sortKey;
       var filterKey = this.filterKey && this.filterKey.toLowerCase();
       var order = this.sortOrders[sortKey] || 1;
-      console.log("greiddd", this.filteredData);
+      console.log(this.filteredData);
       var products = {
         data: this.filteredData,
       };
