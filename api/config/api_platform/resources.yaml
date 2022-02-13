@@ -38,7 +38,7 @@ App\Entity\Request:
       security: 'is_granted("REQUEST_DELETE",object)'
       security_message: 'only customer how create this request can delete him.'
     patch:
-      method: patch
+      method: PUT
       path: /requests/{id}/accept
       controller: App\Controller\RequestAcepteController
       denormalization_context:
