@@ -5,8 +5,7 @@
         <section class="container py-3 py-lg-5">
           <div class="table-col-3">
             <TableCollapse
-              :products="gridData"
-              :columns="gridColumns"
+              :filteredData="filteredData"
               :category="{ name: 'Products' } ? category : category"
               :add="add"
               :remove="remove"
@@ -19,6 +18,7 @@
 </template>
 <script>
 import TableCollapse from "./lib/TableCollapse.vue";
+import { getServerHost } from "../utils/api";
 
 export default {
   props: {
@@ -29,18 +29,31 @@ export default {
   data() {
     return {
       searchQuery: "",
-      gridColumns: ["name", "quantity", "category", "price"],
-      gridData: [
-        { id: 1, name: "Viande", quantity: 100, category: "Meet", price: 0.4 },
-        {
-          id: 2,
-          name: "Tomate",
-          quantity: 100,
-          category: "Vegtebales",
-          price: 0.4,
-        },
-      ],
+      filteredData: {},
     };
+  },
+  mounted() {
+    //Getting all the Products
+    var axios = require("axios");
+    var config = {
+      method: "GET",
+      url: getServerHost() + "/api/products",
+    };
+    axios(config)
+      .then((response) => {
+        if (response["status"] == 200) {
+          for (
+            let index = 0;
+            index < response["data"]["hydra:member"].length;
+            index++
+          ) {
+            this.filteredData["data"] = response["data"]["hydra:member"][index];
+          }
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   },
   methods: {
     handleChange: function (event) {

@@ -9,6 +9,7 @@
         Search <input name="query" v-model="searchQuery" />
       </form>
       <GridTable
+        :filteredData="filteredData"
         :fulldata="fulldata"
         :products="products"
         :columns="columns"
@@ -28,6 +29,7 @@ export default {
     GridTable,
   },
   props: {
+    filteredData: Object,
     fulldata: Object,
     remove: Boolean,
     add: Boolean,

@@ -7,6 +7,7 @@
             <TableCollapse
               :products="gridData"
               :columns="gridColumns"
+              :filteredData="filteredData"
               :fulldata="data"
               :category="{ name: 'Requests' }"
               :add="add"
@@ -26,9 +27,12 @@ export default {
   props: {},
   data() {
     return {
+      add: false,
+      remove: false,
+      filteredData: {},
       data: {},
       searchQuery: "",
-      gridColumns: [],
+      gridColumns: ["firstName", "lastName", "email", "products"],
       gridData: [],
     };
   },
@@ -79,20 +83,13 @@ export default {
                 }
               }
             );
-
-            Object.entries(this.data["customer"]).forEach(([k, v]) => {
-              console.log("ds");
-              if (k !== "@id" && k !== "@type" && k !== "id") {
-                this.gridColumns.push(k);
-                this.gridData.push(v);
-              }
-            });
-            Object.entries(this.data["products"]).forEach(([k, v]) => {
-              if (k !== "@id" && k !== "@type" && k !== "id") {
-                this.gridColumns.push(k);
-                this.gridData.push(v);
-              }
-            });
+            this.filteredData = {
+              firstName: this.data["customer"]["firstName"],
+              lastName: this.data["customer"]["lastName"],
+              email: this.data["customer"]["email"],
+              name: this.data["products"]["name"],
+              description: this.data["products"]["description"],
+            };
           }
         }
       })

@@ -112,7 +112,7 @@ export default {
       var axios = require("axios");
       var FormData = require("form-data");
       const data = new FormData(event.target);
-      this.products.push("/api/products/2");
+      this.products.push("/api/products/1");
       data.append("name", this.requestName);
       data.append("products", this.products);
       data.append("quantity", this.quantity);

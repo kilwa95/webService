@@ -1,7 +1,7 @@
 
 <template>
   <div class="p-3">
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto" v-if="filteredProductsOrders['data']">
       <table class="table-auto w-full">
         <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
           <tr>
@@ -19,31 +19,33 @@
         </thead>
         <tbody class="text-sm divide-y divide-gray-100">
           <tr v-for="product in filteredProductsOrders" :key="product">
-            <td class="p-2 whitespace-nowrap" v-for="key in columns" :key="key">
-              <div class="flex items-center">
-                <!-- <div class="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
-                  <img
-                    class="rounded-full"
-                    src="https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-05.jpg"
-                    width="40"
-                    height="40"
-                    alt="Alex Shatov"
-                  />
-                </div> -->
-                <div class="font-medium text-gray-800">{{ product[key] }}</div>
-              </div>
-            </td>
             <td class="p-2 whitespace-nowrap">
-              <div class="text-left">{{ product[key] }}</div>
+              <div class="text-left">
+                {{ product["firstName"] }}
+              </div>
             </td>
             <td class="p-2 whitespace-nowrap">
               <div class="text-left font-medium text-green-500">
-                {{ product[key] }}
+                {{ product["lastName"] }}
               </div>
             </td>
-            <!-- <td class="p-2 whitespace-nowrap">
-              <div class="text-lg text-center">🇺 {{ product[key] }}</div>
-            </td> -->
+            <td class="p-2 whitespace-nowrap">
+              <div class="text-left font-medium text-green-500">
+                {{ product["email"] }}
+              </div>
+            </td>
+            <td class="p-2 whitespace-nowrap">
+              <div class="text-left font-medium text-green-500">
+                {{ product["name"] }}
+              </div>
+            </td>
+            <td class="p-2 whitespace-nowrap" v-if="isSupplier">
+              <div class="text-left font-medium text-green-500">
+                <button @click="openRequest('filteredProductsOrders', true)">
+                  View Request
+                </button>
+              </div>
+            </td>
 
             <td class="p-2 whitespace-nowrap" v-if="add == true">
               <div
@@ -61,15 +63,27 @@
           </tr>
         </tbody>
       </table>
+      <modal
+        :open="openModal"
+        @close="openRequest(null, false)"
+        v-if="isSupplier"
+      >
+        <RequestDetails :fulldata="fulldata" />
+      </modal>
     </div>
+    <div class="overflow-x-auto" v-else>No requests yet</div>
   </div>
 </template>
 
 
 <script>
+import RequestDetails from "../RequestDetails.vue";
+
+import Modal from "../lib/Modal.vue";
 import bus from "../../bus.js";
 export default {
   props: {
+    filteredData: Object,
     remove: Boolean,
     add: Boolean,
     products: Array,
@@ -82,9 +96,9 @@ export default {
     var sortOrders = {};
     var showHide = {};
 
-    this.columns.forEach(function (key) {
-      sortOrders[key] = 1;
-    });
+    // this.columns.forEach(function (key) {
+    //   sortOrders[key] = 1;
+    // });
     // this.products.forEach(function (key) {
     //   showHide[key] = key;
     //   console.log(showHide[key]);
@@ -93,25 +107,43 @@ export default {
       sortKey: "",
       sortOrders: sortOrders,
       showHide: showHide,
+      openModal: false,
+      category: Object,
     };
   },
+  components: {
+    Modal,
+    RequestDetails,
+  },
   mounted() {
-    this.sortBy(0);
+    console.log(this.filteredData["data"]);
   },
   computed: {
+    isSupplier() {
+      try {
+        if (this.$store.state.logged_user["user"]["roles"] == "ROLE_PROVIDER") {
+          return true;
+        }
+      } catch (err) {
+        err;
+      }
+      return false;
+    },
     filteredProductsOrders: function () {
       var sortKey = this.sortKey;
       var filterKey = this.filterKey && this.filterKey.toLowerCase();
       var order = this.sortOrders[sortKey] || 1;
-      var products = this.fulldata;
-
-      // products.map((d) => this.showHide.push((d.isChosen = false)));
+      console.log("greiddd", this.filteredData);
+      var products = {
+        data: this.filteredData,
+      };
       if (filterKey) {
         products = products.filter(function (row) {
           return Object.keys(row).some(function (key) {
             return String(row[key]).toLowerCase().indexOf(filterKey) > -1;
           });
         });
+        console.log(products);
       }
       if (sortKey) {
         products = products.slice().sort(function (a, b) {
@@ -119,8 +151,8 @@ export default {
           b = b[sortKey];
           return (a === b ? 0 : a > b ? 1 : -1) * order;
         });
+        console.log(products);
       }
-
       return products;
     },
   },
@@ -165,6 +197,10 @@ export default {
         category: item.category,
         price: item.price,
       });
+    },
+    openRequest(category, bool) {
+      this.openModal = bool;
+      this.category = category;
     },
   },
 };

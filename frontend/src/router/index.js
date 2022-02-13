@@ -6,16 +6,16 @@ Vue.use(VueRouter);
 import store from "@/store/index";
 var axios = require("axios");
 
-function isAllowed(to, from, next) {
-  try {
-    if (store.state.logged_user["user"]["roles"][0] == "ROLE_PROVIDER") {
-      requireAuth(to, from, next);
-    }
-  } catch (err) {
-    err;
-  }
-  next("dashboard");
-}
+// function isAllowed(to, from, next) {
+//   try {
+//     if (store.state.logged_user["user"]["roles"][0] == "ROLE_PROVIDER") {
+//       requireAuth(to, from, next);
+//     }
+//   } catch (err) {
+//     err;
+//   }
+//   next("dashboard");
+// }
 
 function requireAuth(from, to, next) {
   var confi = {
@@ -91,9 +91,9 @@ const routes = [
     path: "/create",
     name: "create",
     component: () => import("../components/Create.vue"),
-    beforeEnter: (to, from, next) => {
-      isAllowed(to, from, next);
-    },
+    // beforeEnter: (to, from, next) => {
+    //   isAllowed(to, from, next);
+    // },
   },
   {
     path: "/new-request",
