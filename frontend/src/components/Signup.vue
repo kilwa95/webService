@@ -139,11 +139,17 @@ export default {
       axios(config)
         .then((response) => {
           if (response["status"] == 201) {
+            this.flashMessage.success({
+              title: "You're Account have been created suuccessfuly",
+            });
             this.$router.push("login");
           }
         })
         .catch((e) => {
-          console.log(e);
+          this.flashMessage.error({
+            title: "Somthing Went Wrong",
+            message: e,
+          });
         });
     },
     handleChange: function (event) {
