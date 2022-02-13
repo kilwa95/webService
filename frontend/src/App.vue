@@ -2,6 +2,7 @@
   <div class="vue-tempalte">
     <!-- Navigation -->
     <!-- Main -->
+
     <div class="App">
       <nav
         class="
@@ -84,6 +85,7 @@
         </div>
       </nav>
       <router-view />
+      <FlashMessage></FlashMessage>
     </div>
   </div>
 </template>

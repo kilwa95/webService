@@ -134,11 +134,18 @@ export default {
       axios(config)
         .then((response) => {
           if (response["status"] == 201) {
-            alert("ds");
+            this.flashMessage.success({
+              title: "You're request have been created suuccessfuly",
+              message: "all the suppliers will now see you're request",
+            });
+            this.$router.push("requests");
           }
         })
         .catch((e) => {
-          console.log(e);
+          this.flashMessage.error({
+            title: "Somthing Went Wrong",
+            message: e,
+          });
         });
     },
     handleChange: function (event) {

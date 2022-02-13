@@ -34,6 +34,7 @@ export default {
       searchQuery: "",
       gridColumns: ["firstName", "lastName", "email", "products"],
       gridData: [],
+      test: [],
     };
   },
   mounted() {
@@ -51,6 +52,7 @@ export default {
             index < response["data"]["hydra:member"].length;
             index++
           ) {
+            this.test.push(response["data"]["hydra:member"][index]);
             Object.entries(response["data"]["hydra:member"][index]).forEach(
               ([key, value]) => {
                 if (key == "customer") {
@@ -83,6 +85,9 @@ export default {
                 }
               }
             );
+            // for (let index = 0; index < this.test.length; index++) {
+            //   const element = array[index];
+            // }
             this.filteredData = {
               firstName: this.data["customer"]["firstName"],
               lastName: this.data["customer"]["lastName"],

@@ -1,7 +1,10 @@
 
 <template>
   <div class="p-3">
-    <div class="overflow-x-auto" v-if="filteredProductsOrders['data']">
+    <div
+      class="overflow-x-auto"
+      v-if="Object.entries(filteredProductsOrders['data']).length"
+    >
       <table class="table-auto w-full">
         <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
           <tr>
@@ -18,7 +21,7 @@
           </tr>
         </thead>
         <tbody class="text-sm divide-y divide-gray-100">
-          <tr v-for="product in filteredProductsOrders" :key="product">
+          <tr v-for="product in filteredProductsOrders" :key="product.id">
             <td class="p-2 whitespace-nowrap">
               <div class="text-left">
                 {{ product["firstName"] }}

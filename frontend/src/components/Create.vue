@@ -114,10 +114,18 @@ export default {
       axios(config)
         .then((response) => {
           if (response["status"] == 201) {
-            alert("ds");
+            this.flashMessage.success({
+              title: "Product have been created",
+              message: "You're product have been created suuccessfuly",
+            });
+            this.$router.push("products");
           }
         })
         .catch((e) => {
+          this.flashMessage.error({
+            title: "Somthing Went Wrong",
+            message: "Please try again or contact the support",
+          });
           console.log(e);
         });
     },

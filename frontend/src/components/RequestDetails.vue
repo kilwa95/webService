@@ -49,16 +49,15 @@
                       </div>
                     </div>
                     <br />
-                    <input
+                    <button type="submit" class="btn btn-dark btn-lg btn-block">
+                      Accept Request
+                    </button>
+                    <button
                       type="submit"
-                      value="Accept Request"
-                      class="btn btn-dark btn-lg btn-block"
-                    />
-                    <input
-                      type="submit"
-                      value="Decline Request"
                       class="btn btn-green btn-lg btn-block"
-                    />
+                    >
+                      Decline Request
+                    </button>
                   </form>
                 </div>
               </div>
