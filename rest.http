@@ -26,6 +26,9 @@ Content-Type: application/json
 }
 # Bearer
 ###
+GET https://localhost:8443/requests/2/provider
+
+###
 POST http://localhost:4001/carts
 Content-Type: application/json
 
