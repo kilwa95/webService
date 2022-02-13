@@ -1,0 +1,86 @@
+POST https://localhost:8443/login
+Content-Type: application/json
+
+{
+  "email": "provider@gmail.com",
+  "password": "provider"
+}
+###
+POST https://localhost:8443/products
+Content-Type: application/json
+{
+  "name": "productA",
+  "weight": 100,
+  "description": "my first descrription",
+  "price": 10,
+  "quantity": 1
+}
+Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NDQ2NjQ3NjUsImV4cCI6MTY0NDY2ODM2NSwicm9sZXMiOlsiU3VwcGxpZXIiXSwidXNlcm5hbWUiOiJlZGR5c2FsaWJ5QGdtYWlsLmNvbSJ9.VE7FkrmxIVwgIPw-a6ElAE_pnav-kEKR1hGnfmzSyjp0q-JzqBk0PoUQ1lrb5hnAVpKxZhFhg0tB5stgaeXXNM9iirpvdoSHwkjkXOAnLMcbGxrAh2TXqFLU1XX6NDY0eYnGAftlbmsxltcBppe8tUTiEH0TAP7D6-CKo9mPVEDx-p3dqKzlHEFUNNRn6tyngy-ca66vMagde_NzoEPQnXr9iz8yPZsUuADQAdv5AFRz1m2gsydmDCZNvXFoZ_4JL6rp9ZfrdDe5-jrK4-u79RE9aqruIu8Ec4S6zuB2DycA8XHDMsJqAh-z4eE-jk8_wmZRv7qctkRMn9lkA38CzA
+###
+
+POST https://localhost:8443/catalog/1/product
+Content-Type: application/json
+{
+  "email": "provider@gmail.com",
+  "password": "provider"
+}
+# Bearer
+###
+GET https://localhost:8443/requests/2/provider
+
+###
+POST http://localhost:4001/carts
+Content-Type: application/json
+
+{
+  "customer": {
+    "id": 1,
+    "name": "khaled"
+  },
+  "products":[
+    {
+      "name": "monsttre",
+      "description": "khlajjj"
+    }
+  ]
+}
+###
+GET http://localhost:4001/carts/61cb7202608839424b7d0a80/customer
+Content-Type: application/json
+###
+GET http://localhost:4001/carts
+Content-Type: application/json
+###
+POST http://localhost:4002/transactions
+Content-Type: application/json
+
+{
+  "priceTotal": 1000,
+  "delivery":{
+    "id": 1,
+    "address": "35 quai de grenelle",
+    "city": "paris",
+    "country": "france"
+  },
+  "cart":[
+    {
+      "name": "monsttre",
+      "description": "sami abdulhalim"
+    },
+    {
+      "name": "david",
+      "description": "khaled abd halim "
+    }
+  ]
+}
+###
+GET http://localhost:4002/transactions
+###
+POST http://localhost:4242/create-payment-intent
+Content-Type: application/json
+
+{
+  "paymentMethodType": "card",
+  "currency": 1000
+}
+

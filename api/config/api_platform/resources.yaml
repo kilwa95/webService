@@ -1,0 +1,111 @@
+App\Entity\User:
+  attributes:
+    pagination_items_per_page: 10
+    pagination_client_enabled: true
+    denormalization_context:
+      groups: ['write:customer:user']
+    normalization_context:
+      groups: ['read:user:collection']
+  collectionOperations:
+    get: 
+    current_user:
+      path: /users/current
+      method: GET
+      controller: App\Controller\UserConnectedController
+    post:
+  itemOperations:
+    get: 
+    delete:
+      security: 'is_granted("ADMIN_DELETE",object)'
+      security_message: 'only admins can delete users.'
+
+App\Entity\Request:
+  attributes:
+    pagination_items_per_page: 10
+    pagination_client_enabled: true
+    normalization_context:
+      groups: ['read:customer:item','read:request:collection']
+    denormalization_context:
+      groups: [write:request:collection]
+  collectionOperations:
+     get: ~
+     post:
+      security_post_denormalize: 'is_granted("REQUEST_CREATE",object)'
+      security_message: 'only customers can create requests.'
+  itemOperations:
+    get: ~
+    delete:
+      security: 'is_granted("REQUEST_DELETE",object)'
+      security_message: 'only customer how create this request can delete him.'
+    patch:
+      method: PUT
+      path: /requests/{id}/accept
+      controller: App\Controller\RequestAcepteController
+      denormalization_context:
+        groups: [patch:request:item]
+        openapi_context:
+          summary: accept a request
+    put:
+      denormalization_context:
+        groups: [edit:request:item]
+      security: 'is_granted("REQUEST_EDIT",object)'
+      security_message: 'only customer how create this request can edit him.'
+
+App\Entity\Product:
+  attributes:
+    pagination_items_per_page: 10
+    pagination_client_enabled: true
+    normalization_context:
+      groups: ['read:product:collection']
+    denormalization_context:
+      groups: ['write:product:collection']
+  collectionOperations:
+     get: ~
+     post: ~
+    #  post:
+    #   security_post_denormalize: 'is_granted("PRODUCT_CREATE",object)'
+    #   security_message: 'only admins can create products.'
+  itemOperations:
+    get: ~
+    delete: ~
+    put: ~
+    # delete:
+    #   security: 'is_granted("PRODUCT_DELETE",object)'
+    #   security_message: 'only admins who create this product can delete him.'
+    # put:
+    #   denormalization_context:
+    #     groups: ['edit:product:item']
+    #   security: 'is_granted("PRODUCT_EDIT",object)'
+    #   security_message: 'only admins who create this product can edit him.'
+
+App\Entity\Catalog:
+  attributes:
+    pagination_items_per_page: 10
+    pagination_client_enabled: true
+    normalization_context:
+      groups: ['read:catalog:collection']
+    denormalization_context:
+      groups: ['write:catalog:collection']
+  collectionOperations:
+     get: ~
+     post:
+      security_post_denormalize: 'is_granted("CATALOG_CREATE",object)'
+      security_message: 'only providers can create catalog.'
+  itemOperations:
+    get: ~
+    delete:
+      security: 'is_granted("CATALOG_DELETE",object)'
+      security_message: 'only provider who create this catalog can delete him.'
+    put:
+      denormalization_context:
+        groups: ['edit:catalog:item']
+      security: 'is_granted("CATALOG_EDIT",object)'
+      security_message: 'only provider who create this catalog can edit him.'
+
+
+
+ 
+   
+
+     
+ 
