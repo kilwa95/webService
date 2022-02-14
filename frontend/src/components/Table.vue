@@ -2,14 +2,14 @@
 <table id="firstTable">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Phone</th>
-      <th>Profession</th>
+      <th>FirstName</th>
+      <th>LastName</th>
+      <th>Email</th>
+      <th>Products</th>
     </tr>
   </thead>
   <tbody>
-    <tr v-for="row in rows">
+    <tr :v-for="row in rows">
       <td>{{row.id}}</td>
       <td>{{row.name}}</td>
       <td>{{row.phone}}</td>
