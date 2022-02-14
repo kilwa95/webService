@@ -79,7 +79,10 @@ export default {
         })
         .catch(() => {
           this.$store.commit("getLoggedUser", {});
-          alert("invalid passowrd or email");
+          this.flashMessage.error({
+            title: "Invalid passowrd or email",
+            message: "Please try again or contact the support",
+          });
         });
     },
     handleChange: function (event) {
@@ -92,7 +95,7 @@ export default {
 };
 </script>
 <style scoped>
-.mt-16{
-margin-top: 16px;
+.mt-16 {
+  margin-top: 16px;
 }
 </style>

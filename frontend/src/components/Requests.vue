@@ -29,10 +29,17 @@ export default {
     return {
       add: false,
       remove: false,
-      filteredData: {},
+      filteredData: [],
       data: {},
       searchQuery: "",
-      gridColumns: ["firstName", "lastName", "email", "products", "status"],
+      gridColumns: [
+        "firstName",
+        "lastName",
+        "email",
+        "products",
+        "status",
+        "action",
+      ],
       gridData: [],
       test: [],
     };
@@ -53,62 +60,8 @@ export default {
             index < response["data"]["hydra:member"].length;
             index++
           ) {
-            Object.entries(response["data"]["hydra:member"][index]).forEach(
-              ([key, value]) => {
-                if (key == "customer") {
-                  this.data["customer"] = value;
-                  for (
-                    let index = 0;
-                    index < this.data["customer"].length;
-                    index++
-                  ) {
-                    if (
-                      index !== "@id" &&
-                      index !== "@type" &&
-                      index !== "id"
-                    ) {
-                      this.data[key] = value[index];
-                    }
-                  }
-                }
-
-                if (key == "products") {
-                  for (let index = 0; index < value.length; index++) {
-                    if (
-                      index !== "@id" &&
-                      index !== "@type" &&
-                      index !== "id"
-                    ) {
-                      this.data[key] = value[index];
-                    }
-                  }
-                }
-              }
-            );
-            // for (let index = 0; index < this.test.length; index++) {
-            //   const element = array[index];
-            // }
-            console.log(response["data"]["hydra:member"][index]["products"]);
-            this.filteredData = {
-              firstName:
-                response["data"]["hydra:member"][index]["customer"][
-                  "firstName"
-                ],
-              lastName:
-                response["data"]["hydra:member"][index]["customer"]["lastName"],
-              email:
-                response["data"]["hydra:member"][index]["customer"]["email"],
-              name: response["data"]["hydra:member"][index]["products"][0][
-                "name"
-              ],
-              description:
-                response["data"]["hydra:member"][index]["products"][0][
-                  "description"
-                ],
-              status: response["data"]["hydra:member"][index]["status"],
-            };
+            this.filteredData.push(response["data"]["hydra:member"][index]);
           }
-          console.log("all request", this.test);
         }
       })
       .catch((e) => {

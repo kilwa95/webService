@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       searchQuery: "",
-      filteredData: {},
+      filteredData: [],
     };
   },
   mounted() {
@@ -47,7 +47,7 @@ export default {
             index < response["data"]["hydra:member"].length;
             index++
           ) {
-            this.filteredData["data"] = response["data"]["hydra:member"][index];
+            this.filteredData.push(response["data"]["hydra:member"][index]);
           }
         }
       })

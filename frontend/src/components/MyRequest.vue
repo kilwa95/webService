@@ -7,11 +7,7 @@
             <TableCollapse
               :products="gridData"
               :columns="gridColumns"
-              :filteredData="filteredData"
-              :fulldata="data"
-              :category="{ name: 'Requests' }"
-              :add="add"
-              :remove="remove"
+              :category="{ name: 'My Requests' }"
             />
           </div>
         </section>
@@ -20,21 +16,16 @@
   </div>
 </template>
 <script>
-import { getServerHost } from "../utils/api";
 import TableCollapse from "./lib/TableCollapse.vue";
+import { getServerHost } from "../utils/api";
 
 export default {
   props: {},
   data() {
     return {
-      add: false,
-      remove: false,
-      filteredData: {},
-      data: {},
       searchQuery: "",
       gridColumns: ["firstName", "lastName", "email", "products", "status"],
       gridData: [],
-      test: [],
     };
   },
   mounted() {
@@ -42,19 +33,20 @@ export default {
     var axios = require("axios");
     var config = {
       method: "GET",
-      url: getServerHost() + "/api/" + provider_id+"/products",
+      url:
+        getServerHost() +
+        "/requests/" +
+        this.$store.state.logged_user["user"]["id"] +
+        "/provider",
     };
     axios(config)
       .then((response) => {
         if (response["status"] == 200) {
-          for (
-            let index = 0;
-            index < response["data"]["hydra:member"].length;
-            index++
-          ) {
-            this.filteredData["data"] = response["data"]["hydra:member"][index];
+          for (let index = 0; index < response["data"].length; index++) {
+            this.gridData.push(response["data"][index]);
           }
         }
+        console.log(this.gridData);
       })
       .catch((e) => {
         console.log(e);

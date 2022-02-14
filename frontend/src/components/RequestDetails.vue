@@ -8,27 +8,27 @@
               <div class="inner-block" style="width: 100%">
                 <div class="vue-tempalte">
                   <h3>
-                    Request From: {{ fulldata["customer"]["firstName"] }}
-                    {{ fulldata["customer"]["lastName"] }}
+                    Request From: {{ product["customer"]["firstName"] }}
+                    {{ product["customer"]["lastName"] }}
                   </h3>
                   <br /><br />
                   <div class="form-group">
                     <h4>User Information</h4>
                     <div class="form-group">
                       <label>FirstName:</label>
-                      {{ fulldata["customer"]["firstName"] }}
+                      {{ product["customer"]["firstName"] }}
                     </div>
                     <div class="form-group">
                       <label>lastName:</label>
-                      {{ fulldata["customer"]["lastName"] }}
+                      {{ product["customer"]["lastName"] }}
                     </div>
                     <div class="form-group">
                       <label>Email:</label>
-                      {{ fulldata["customer"]["email"] }}
+                      {{ product["customer"]["email"] }}
                     </div>
                     <div class="form-group">
                       <label>Phone:</label>
-                      {{ fulldata["customer"]["phone"] }}
+                      {{ product["customer"]["phone"] }}
                     </div>
                   </div>
                   <br /><br />
@@ -36,22 +36,22 @@
                     <h4>Request Information</h4>
                     <div class="form-group">
                       <label>Name:</label>
-                      {{ fulldata["products"]["name"] }}
+                      {{ product["products"][0]["name"] }}
                     </div>
                     <div class="form-group">
                       <label>quantity:</label>
-                      {{ fulldata["products"]["quantity"] }}
+                      {{ product["products"][0]["quantity"] }}
                     </div>
                     <div class="form-group">
                       <label>Description:</label>
-                      {{ fulldata["products"]["description"] }}
+                      {{ product["products"][0]["description"] }}
                     </div>
                   </div>
                   <br />
                   <div v-if="reqStatus == false">
                     <button
                       type="submit"
-                      @click="newRequest(fulldata['products']['id'])"
+                      @click="newRequest(product['products'][0]['id'])"
                       class="btn btn-dark btn-lg btn-block"
                     >
                       Accept Request
@@ -78,30 +78,42 @@
 import { getServerHost } from "../utils/api";
 export default {
   props: {
-    fulldata: Object,
+    product: Array,
   },
   data: () => ({
     reqStatus: false,
   }),
   mounted() {
-    //Getting all the Products
-    var axios = require("axios");
-    var config = {
-      method: "GET",
-      url: getServerHost() + "/api/requests/" + this.fulldata["products"]["id"],
-    };
-    axios(config)
-      .then((response) => {
-        console.log(response);
-        if (response["status"] == 200) {
-          this.reqStatus = true;
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    console.log("sasasa", this.product);
   },
+  computed: {
+    getRequest() {
+      return this.getRequestDetail();
+    },
+  },
+
   methods: {
+    getRequestDetail() {
+      //Getting all the Products
+      var axios = require("axios");
+      var config = {
+        method: "GET",
+        url:
+          getServerHost() +
+          "/api/requests/" +
+          this.product["products"][0]["id"],
+      };
+      axios(config)
+        .then((response) => {
+          console.log(response);
+          if (response["status"] == 200) {
+            return response;
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
     newRequest(product_id) {
       var axios = require("axios");
       //    var FormData = require("form-data");
@@ -130,6 +142,7 @@ export default {
           console.log(e);
         });
     },
+
     handleChange: function (event) {
       this[event.target.name] = event.target.value;
     },
