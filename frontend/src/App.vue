@@ -31,7 +31,7 @@
           <ul class="nav navbar-nav flex-row float-left" v-else>
             <li class="nav-item">
               <router-link class="nav-link pr-3" to="/login"
-                ><button @click="logOut">Signout</button></router-link
+                ><button class="btn"  @click="logOut">Signout</button></router-link
               >
             </li>
             <div class="nav-item" v-if="isSupplier" style="display: flex">
@@ -146,5 +146,11 @@ export default {
 <style scoped>
 .mr-14 {
   margin-right: 14px;
+}
+.btn{
+  padding: 0;
+  width: 100px;
+  color: white;
+  background: red;
 }
 </style>

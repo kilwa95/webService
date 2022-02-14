@@ -1,6 +1,6 @@
 <template>
   <div class="vertical-center">
-    <div class="inner-block" style="width: 100%">
+    <div class="inner-block" style="width: 50%">
       <div class="vue-tempalte">
         <form @submit.prevent="newRequest">
           <h3>Create New Request</h3>
